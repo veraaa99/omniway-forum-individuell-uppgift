@@ -1,9 +1,12 @@
+import Header from "./components/Header"
+import UserForm from "./components/UserForm"
 
 function App() {
 
   return (
     <>
-      <h1 className="text-orange-600 text-center p-4">Omniway</h1>
+      <Header />
+      <UserForm />
     </>
   )
 }
