@@ -1,4 +1,5 @@
 import Header from "./components/Header"
+import ThreadList from "./components/ThreadList"
 import UserForm from "./components/UserForm"
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <>
       <Header />
       <UserForm />
+      <ThreadList />
     </>
   )
 }
