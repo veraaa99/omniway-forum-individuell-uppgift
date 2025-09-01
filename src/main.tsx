@@ -3,11 +3,16 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
+import { ThreadProvider } from './contexts/ThreadContext.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: (
+      <ThreadProvider>
+        <App />
+      </ThreadProvider>
+    )
   }
 ])
 

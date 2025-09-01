@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
+import LocalStorageService from "../utils/LocalStorageService";
+import { dummyThreads } from "../data/threads";
 
 type ThreadState = {
-  threads: Thread[];
+  threads: Thread[] | QNAThread[];
   comments: Comment[];
   actions: {
     createThread: (thread: Thread) => void;
@@ -33,14 +35,14 @@ function ThreadProvider({children}: PropsWithChildren) {
   }, [])
 
   const _getThreads = () => {
-    const _threads: Thread[] = LocalStorageService.getItem('@forum/threads', []);
+    const _threads: Thread[] | QNAThread[] = LocalStorageService.getItem('@forum/threads', dummyThreads);
     setThreads(_threads)
   }
 
   const createThread: typeof defaultState.actions.createThread = (thread) => {
     const newThreads = [...threads, thread]
     setThreads(newThreads)
-    localStorageService.setItem<Thread[]>('@forum/threads', newThreads)
+    LocalStorageService.setItem<Thread[]>('@forum/threads', newThreads)
   } 
   const getThreadByID: typeof defaultState.actions.getThreadByID = (threadId: number): Thread | undefined => {
     return threads.find(thread => thread.id === threadId)
@@ -48,7 +50,7 @@ function ThreadProvider({children}: PropsWithChildren) {
   const addComment: typeof defaultState.actions.addComment = (comment): void => {
     const newComments = [...comments, comment]
     setComments(newComments)
-    localStorageService.setItem<Comment[]>('@forum/comments', newComments)
+    LocalStorageService.setItem<Comment[]>('@forum/comments', newComments)
   } 
   const isQNAAnswered: typeof defaultState.actions.isQNAAnswered = (threadId: number): boolean => {
     const thread = threads.find(t => t.id === threadId)
