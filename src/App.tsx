@@ -1,13 +1,14 @@
+import Header from "./components/Header"
 import ThreadList from "./components/ThreadList"
-import { dummyThreads } from "./data/threads"
+import UserForm from "./components/UserForm"
 
 function App() {
 
   return (
     <>
-      <h1 className="text-orange-600 text-center p-4">Omniway</h1>
-
-      <ThreadList threads={dummyThreads} />
+      <Header />
+      <UserForm />
+      <ThreadList />
     </>
   )
 }

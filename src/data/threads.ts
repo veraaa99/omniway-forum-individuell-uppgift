@@ -1,7 +1,6 @@
-import type { ForumThread } from "../types/forum";
 import { dummyUsers } from "./users";
 
-export const dummyThreads: ForumThread[] = [
+export const dummyThreads: (Thread | QNAThread)[] = [
 	{
 		id: 1,
 		title: "Testartråden nummer 1",

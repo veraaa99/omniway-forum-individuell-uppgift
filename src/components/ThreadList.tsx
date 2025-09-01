@@ -1,13 +1,11 @@
 import React from 'react'
-import type { ForumThread } from '../types/forum'
 import Thread from './Thread';
+import { useThread } from '../contexts/ThreadContext';
 
 
-type ThreadListProps = {
-  threads: ForumThread[];
-}
+export default function ThreadList() {
+  const { threads } = useThread();
 
-export default function ThreadList({ threads }: ThreadListProps) {
   return (
     <div className='container mx-auto px-4 lg: max-w-6xl'>
       <h1 className='text-3xl text-center font-bold text-blue-950 my-4'>Forum</h1>

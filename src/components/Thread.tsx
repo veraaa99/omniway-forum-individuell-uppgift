@@ -1,12 +1,9 @@
 import React from 'react'
-import type { ForumThread } from '../types/forum';
 import { FaUser } from 'react-icons/fa';
 
-
 type ThreadProps = {
-  thread: ForumThread;
+  thread: Thread | QNAThread;
 };
-
 
 export default function Thread({ thread }: ThreadProps) {
   return (
