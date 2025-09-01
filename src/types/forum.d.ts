@@ -6,7 +6,7 @@ type User = {
 }
 
 type Thread = {
-  id: number;
+	id: number;
 	title: string;
 	category: ThreadCategory;
 	creationDate: string;
@@ -14,7 +14,7 @@ type Thread = {
 	creator: User;
 }
 
-type QNAThread =  Thread & { //Type extension
+type QNAThread = Thread & { //Type extension
 	category: "QNA";
 	isAnswered: boolean;
 	commentAnswerId?: number;
@@ -26,3 +26,5 @@ type Comment = {
 	content: string;
 	creator: User
 }
+
+export type ForumThread = Thread | QNAThread;
