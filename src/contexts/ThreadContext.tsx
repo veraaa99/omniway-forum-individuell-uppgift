@@ -3,8 +3,6 @@ import { createContext, useContext, useEffect, useState, type PropsWithChildren 
 type ThreadState = {
   threads: Thread[];
   comments: Comment[];
-  loading: boolean;
-  error: string | null;
   actions: {
     createThread: (thread: Thread) => void;
     getThreadByID: (threadId: Thread['id']) => Thread | undefined;
@@ -16,8 +14,6 @@ type ThreadState = {
 const defaultState: ThreadState = {
   threads: [],
   comments: [],
-  loading: false,
-  error: null,
   actions: {
     createThread: () => {},
     getThreadByID: () => undefined,
@@ -31,16 +27,14 @@ const ThreadContext = createContext<ThreadState>(defaultState);
 function ThreadProvider({children}: PropsWithChildren) {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     _getThreads();
   }, [])
 
   const _getThreads = () => {
-    // const _threads: Thread[] = LocalStorageService.getItem('@forum/threads', []);
-    // setThreads(_threads)
+    const _threads: Thread[] = LocalStorageService.getItem('@forum/threads', []);
+    setThreads(_threads)
   }
 
   const createThread: typeof defaultState.actions.createThread = (thread) => {
@@ -78,8 +72,6 @@ function ThreadProvider({children}: PropsWithChildren) {
     <ThreadContext.Provider value={{
       threads,
       comments,
-      loading,
-      error,
       actions
     }}>
       { children }
