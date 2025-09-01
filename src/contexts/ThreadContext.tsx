@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import LocalStorageService from "../utils/LocalStorageService";
 import { dummyThreads } from "../data/threads";
+import type { QNAThread, Thread } from "../types/forum";
 
 type ThreadState = {
   threads: Thread[] | QNAThread[];
@@ -17,16 +18,16 @@ const defaultState: ThreadState = {
   threads: [],
   comments: [],
   actions: {
-    createThread: () => {},
+    createThread: () => { },
     getThreadByID: () => undefined,
-    addComment: () => {},
+    addComment: () => { },
     isQNAAnswered: () => false,
   }
 };
 
 const ThreadContext = createContext<ThreadState>(defaultState);
 
-function ThreadProvider({children}: PropsWithChildren) {
+function ThreadProvider({ children }: PropsWithChildren) {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
 
@@ -43,15 +44,15 @@ function ThreadProvider({children}: PropsWithChildren) {
     const newThreads = [...threads, thread]
     setThreads(newThreads)
     LocalStorageService.setItem<Thread[]>('@forum/threads', newThreads)
-  } 
+  }
   const getThreadByID: typeof defaultState.actions.getThreadByID = (threadId: number): Thread | undefined => {
     return threads.find(thread => thread.id === threadId)
-  } 
+  }
   const addComment: typeof defaultState.actions.addComment = (comment): void => {
     const newComments = [...comments, comment]
     setComments(newComments)
     LocalStorageService.setItem<Comment[]>('@forum/comments', newComments)
-  } 
+  }
   const isQNAAnswered: typeof defaultState.actions.isQNAAnswered = (threadId: number): boolean => {
     const thread = threads.find(t => t.id === threadId)
 
@@ -61,7 +62,7 @@ function ThreadProvider({children}: PropsWithChildren) {
     }
 
     return false;
-  } 
+  }
 
   const actions: typeof defaultState.actions = {
     createThread,
@@ -69,14 +70,14 @@ function ThreadProvider({children}: PropsWithChildren) {
     addComment,
     isQNAAnswered
   }
-   
+
   return (
     <ThreadContext.Provider value={{
       threads,
       comments,
       actions
     }}>
-      { children }
+      {children}
     </ThreadContext.Provider>
   )
 }
