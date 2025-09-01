@@ -27,4 +27,4 @@ type Comment = {
 	creator: User
 }
 
-export type ForumThread = Thread | QNAThread;
+type ForumThread = Thread | QNAThread;

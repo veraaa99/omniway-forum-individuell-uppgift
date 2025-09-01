@@ -1,4 +1,3 @@
-import type { ForumThread } from "../types/forum";
 import { dummyUsers } from "./users";
 
 export const dummyThreads: ForumThread[] = [
