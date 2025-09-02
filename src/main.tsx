@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import { ThreadProvider } from './contexts/ThreadContext.tsx'
 import { dummyThreads } from './data/threads.ts'
 import { UserProvider } from './contexts/UserContext.tsx'
+import Thread from './components/Thread.tsx'
 
 const router = createBrowserRouter([
   {
