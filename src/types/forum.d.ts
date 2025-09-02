@@ -26,3 +26,5 @@ type Comment = {
 	content: string;
 	creator: User
 }
+
+type ForumThread = Thread | QNAThread;

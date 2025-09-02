@@ -4,15 +4,23 @@ import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { ThreadProvider } from './contexts/ThreadContext.tsx'
+import { dummyThreads } from './data/threads.ts'
+import { UserProvider } from './contexts/UserContext.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ThreadProvider>
-        <App />
-      </ThreadProvider>
+      <UserProvider>
+        <ThreadProvider>
+          <App />
+        </ThreadProvider>
+      </UserProvider>
     )
+  },
+  {
+    path: "/thread",
+    element: <Thread thread={dummyThreads[0]} />
   }
 ])
 
