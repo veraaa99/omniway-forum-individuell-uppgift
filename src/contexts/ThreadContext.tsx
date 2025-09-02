@@ -4,11 +4,11 @@ import { dummyThreads } from "../data/threads";
 
 type ThreadState = {
   threads: Thread[] | QNAThread[];
-  comments: Comment[];
+  comments: ForumComment[];
   actions: {
     createThread: (thread: Thread) => void;
     getThreadByID: (threadId: Thread['id']) => Thread | undefined;
-    addComment: (comment: Comment) => void;
+    addComment: (comment: ForumComment) => void;
     isQNAAnswered: (threadId: Thread['id']) => boolean;
   }
 };
@@ -28,7 +28,7 @@ const ThreadContext = createContext<ThreadState>(defaultState);
 
 function ThreadProvider({ children }: PropsWithChildren) {
   const [threads, setThreads] = useState<Thread[]>([]);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<ForumComment[]>([]);
 
   useEffect(() => {
     _getThreads();
@@ -50,7 +50,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
   const addComment: typeof defaultState.actions.addComment = (comment): void => {
     const newComments = [...comments, comment]
     setComments(newComments)
-    LocalStorageService.setItem<Comment[]>('@forum/comments', newComments)
+    LocalStorageService.setItem<ForumComment[]>('@forum/comments', newComments)
   }
   const isQNAAnswered: typeof defaultState.actions.isQNAAnswered = (threadId: number): boolean => {
     const thread = threads.find(t => t.id === threadId)
