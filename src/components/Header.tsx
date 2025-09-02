@@ -5,16 +5,10 @@ import { IoMdMail } from "react-icons/io";
 import { MdLibraryBooks } from "react-icons/md";
 
 import { useUser } from "../contexts/UserContext";
-import { useEffect } from "react";
-import { dummyUsers } from "../data/users";
 
 function Header() {
 
-  const { currentUser, actions } = useUser()
-
-  useEffect(() => {
-    actions.setUser(dummyUsers[0])
-  }, [])
+  const { currentUser } = useUser()
 
   return (
     <div className="w-full bg-orange-500 h-16 mt-10 flex justify-between px-10 md:px-28 xl:px-40">
