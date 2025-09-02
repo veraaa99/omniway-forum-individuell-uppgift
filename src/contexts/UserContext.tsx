@@ -1,16 +1,22 @@
-import { createContext, useContext, useState, type PropsWithChildren } from "react"
+import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react"
+import LocalStorageService from "../utils/LocalStorageService"
+import { dummyUsers } from "../data/users"
 
 type UserState = {
     users: User[]
+    currentUser: User | null,
     actions: {
         createUser: (user: User) => void
+        setUser: (user: User) => void
     }
 }
 
 const defaultState: UserState = {
     users: [],
+    currentUser: null,
     actions: {
-        createUser: () => {}
+        createUser: () => {},
+        setUser: () => {}
     }
 }
 
@@ -18,18 +24,47 @@ const UserContext = createContext<UserState>(defaultState)
 
 function UserProvider ({ children }: PropsWithChildren) {
     const [users, setUsers] = useState<User[]>([])
+    const [currentUser, setCurrentUser] = useState<User | null>(defaultState.currentUser)
+    
+    useEffect(() => {
+      LocalStorageService.setItem('@forum/users', dummyUsers)
+      _getUsers()
+    }, [])
+    
+    const _getUsers = () => {
+        const _users: User[] = LocalStorageService.getItem('@forum/users', [])
+        setUsers(_users)
+    }
+
+    const _setUsers = (_users: User[]) => {
+        LocalStorageService.setItem('@forum/users', _users)
+        setUsers(_users)
+    }
 
     const createUser: typeof defaultState.actions.createUser = (user) => {
         console.log("User: ", user)
+
+        const isUserNameTaken = users.find((u) => u.userName == user.userName)
+        if(!isUserNameTaken) {
+            const updatedUsers = [...users, user]
+            _setUsers(updatedUsers)
+        }
+    }
+
+    const setUser = (user: User) => {
+        LocalStorageService.setItem('@forum/currentUser', user)
+        setCurrentUser(user)
     }
 
     const actions = {
-        createUser
+        createUser,
+        setUser
     }
 
     return (
         <UserContext.Provider value={{
             users,
+            currentUser,
             actions
         }}>
             { children }
