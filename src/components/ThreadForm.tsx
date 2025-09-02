@@ -18,7 +18,6 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
         register,
         setValue,
         handleSubmit,
-        formState: { errors },
     } = useForm<ThreadFormData>()
 
     const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
@@ -40,13 +39,13 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                     <label className="block mb-2" >Titel: </label>
-                    <input className='border' {...register("title")} />
+                    <input className='border' required {...register("title")} />
                 </div>
 
                 <div className="mb-4">
                     <label className="block mb-2" >Kategori: </label>
                     <div className='flex'>
-                        <input className='border' {...register("category")} />
+                        <input className='border' required {...register("category")} />
                         <Dropdown
                             onSelect={(value) => setValue("category", value, { shouldValidate: true })}
                         />
@@ -55,7 +54,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
 
                 <div className="mb-6">
                     <label>Beskrivning: </label>
-                    <textarea className='border w-full p-2 rounded' id='description' {...register("description")} />
+                    <textarea className='border w-full p-2 rounded' required id='description' {...register("description")} />
                 </div>
 
                 <button type='submit' className='border-blue-950 rounded'>Publicera</button>
