@@ -26,3 +26,4 @@ type ForumComment = {
 	content: string;
 	creator: User;
 }
+
