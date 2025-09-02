@@ -1,4 +1,6 @@
 import { FaUser } from 'react-icons/fa';
+import CommentForm from './CommentForm';
+import { useState } from 'react';
 
 type ThreadProps = {
   thread: Thread | QNAThread;
@@ -8,6 +10,7 @@ type ThreadProps = {
 export default function Thread({ thread, comments }: ThreadProps) {
   const threadComments = comments?.filter(c => c.thread === thread.id) ?? [];
   const answerCount = threadComments.length;
+  const [showCommentForm, setCommentForm] = useState<boolean>(false)
   return (
     <div className='p-4 rounded-lg mb-4 border-gray-300 bg-blue-950'>
 
@@ -31,9 +34,10 @@ export default function Thread({ thread, comments }: ThreadProps) {
       <p className='text-gray-200 italic text-sm mb-2'> {answerCount > 0 ? `${answerCount} answer${answerCount > 1 ? "s" : ""}` : "No answers yet"}</p>
 
       <button className='bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500'
-        onClick={() => console.log("Reply here")}>
+        onClick={() => setCommentForm((prev) => !prev)}>
         Reply
       </button>
+      {showCommentForm && <CommentForm thread={thread} />}
     </div>
   );
 }
