@@ -17,10 +17,6 @@ const router = createBrowserRouter([
         </ThreadProvider>
       </UserProvider>
     )
-  },
-  {
-    path: "/thread",
-    element: <Thread thread={dummyThreads[0]} />
   }
 ])
 
