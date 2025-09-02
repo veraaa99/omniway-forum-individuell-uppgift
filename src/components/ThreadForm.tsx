@@ -1,5 +1,4 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import Dropdown from './Dropdown'
 import { useThread } from '../contexts/ThreadContext';
 import { dummyUsers } from '../data/users';
 
@@ -20,7 +19,11 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
         handleSubmit,
     } = useForm<ThreadFormData>()
 
+    //if category === "THREAD", rendera ut error-meddelande i form
+    //ÄNDRA NEDAN SÅ ATT THREAD ÄR DEFAULT VALUE
+
     const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
+
         const newThread: Thread = {
             id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
             title: data.title,
@@ -44,11 +47,19 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
 
                 <div className="mb-4">
                     <label className="block mb-2" >Kategori: </label>
-                    <div className='flex'>
-                        <input className='border' required {...register("category")} />
-                        <Dropdown
-                            onSelect={(value) => setValue("category", value, { shouldValidate: true })}
-                        />
+                    <div className=''>
+                        <select 
+                          className='border'
+                            required
+                            {...register("category")}
+                            onChange={e => setValue("category", e.target.value as ThreadCategory, { shouldValidate: true })}
+                          >
+                            <option value="THREAD">Välj:</option> 
+                            <option value="QNA">QNA</option>
+                            <option value="Diskussion">Diskussion</option>
+                            <option value="Meddelande">Meddelande</option>
+                            <option value="Hitta gruppmedlem">Hitta gruppmedlem</option>
+                        </select>
                     </div>
                 </div>
 
@@ -57,7 +68,12 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     <textarea className='border w-full p-2 rounded' required id='description' {...register("description")} />
                 </div>
 
-                <button type='submit' className='border-blue-950 rounded'>Publicera</button>
+                <button 
+                type='submit' 
+                className='bg-green-800 text-white p-3 rounded'
+                >
+                    Publicera
+                </button>
             </form >
         </div >
     )

@@ -36,7 +36,7 @@ export default function ThreadList() {
         <IoIosAddCircleOutline /><p>Skapa ny tråd</p>
       </div>
 
-      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}
+      <Modal isOpen={isModalOpen} appElement={document.getElementById('root') as HTMLElement} onRequestClose={() => setIsModalOpen(false)}
         contentLabel='Skapa ny tråd'
         className='text-blue-950 rounded'
         overlayClassName='fixed inset-0 text-white flex justify-center items-center z-50'>
