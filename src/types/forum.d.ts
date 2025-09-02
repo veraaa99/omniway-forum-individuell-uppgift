@@ -20,9 +20,9 @@ type QNAThread = Thread & { //Type extension
 	commentAnswerId?: number;
 }
 
-type Comment = {
+type ForumComment = {
 	id: number;
 	thread: number;
 	content: string;
-	creator: User
+	creator: User;
 }

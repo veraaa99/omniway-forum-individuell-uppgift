@@ -3,9 +3,12 @@ import { FaUser } from 'react-icons/fa';
 
 type ThreadProps = {
   thread: Thread | QNAThread;
+  comments?: ForumComment[]
 };
 
-export default function Thread({ thread }: ThreadProps) {
+export default function Thread({ thread, comments }: ThreadProps) {
+  const threadComments = comments?.filter(c => c.thread === thread.id) ?? [];
+  const answerCount = threadComments.length;
   return (
     <div className='p-4 rounded-lg mb-4 border-gray-300 bg-blue-950'>
 
@@ -26,9 +29,7 @@ export default function Thread({ thread }: ThreadProps) {
 
       <p className='text-gray-200 my-3'>{thread.description}</p>
 
-      {'isAnswered' in thread && (
-        <p className='text-gray-200 italic mb-2'>{thread.isAnswered ? 'Answered' : 'No answeres yet'}</p>
-      )}
+      <p className='text-gray-200 italic text-sm mb-2'> {answerCount > 0 ? `${answerCount} answer${answerCount > 1 ? "s" : ""}` : "No answers yet"}</p>
 
       <button className='bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500'
         onClick={() => console.log("Reply here")}>
