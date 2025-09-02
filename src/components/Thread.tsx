@@ -1,6 +1,7 @@
 import { FaUser } from 'react-icons/fa';
 import CommentForm from './CommentForm';
 import { useState } from 'react';
+import CommentsList from './CommentsList';
 
 type ThreadProps = {
   thread: Thread | QNAThread;
@@ -38,6 +39,7 @@ export default function Thread({ thread, comments }: ThreadProps) {
         Reply
       </button>
       {showCommentForm && <CommentForm thread={thread} />}
+      <CommentsList threadId={thread.id} />
     </div>
   );
 }
