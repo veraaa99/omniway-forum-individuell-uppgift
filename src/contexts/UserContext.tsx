@@ -7,7 +7,7 @@ type UserState = {
     currentUser: User | null,
     actions: {
         createUser: (user: User) => void
-        setUser: (user: User) => void
+        setUser: (user: User | null) => void
     }
 }
 
@@ -51,7 +51,7 @@ function UserProvider ({ children }: PropsWithChildren) {
         }
     }
 
-    const setUser = (user: User) => {
+    const setUser = (user: User | null) => {
         LocalStorageService.setItem('@forum/currentUser', user)
         setCurrentUser(user)
     }
