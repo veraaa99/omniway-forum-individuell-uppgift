@@ -1,4 +1,4 @@
-type ThreadCategory = "THREAD" | "QNA";
+type ThreadCategory = "THREAD" | "QNA" | "Diskussion" | "Meddelande" | "Hitta gruppmedlem";
 
 type User = {
 	userName: string;

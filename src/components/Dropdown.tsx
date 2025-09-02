@@ -4,7 +4,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
-export default function Dropdown() {
+type DropdownProps = {
+  onSelect: (value: ThreadCategory) => void
+}
+
+export default function Dropdown({ onSelect }: DropdownProps) {
   return (
     <Menu as="div" className="relative inline-block">
       <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring-1 inset-ring-white/5 hover:bg-white/20">
@@ -18,38 +22,42 @@ export default function Dropdown() {
       >
         <div className="py-1">
           <MenuItem>
-            <a
-              href="#"
+            <button
+              type='button'
               className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
+              onClick={() => onSelect('QNA')}
             >
               QNA
-            </a>
+            </button>
           </MenuItem>
           <MenuItem>
-            <a
-              href="#"
+            <button
+              type='button'
               className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
+              onClick={() => onSelect('Diskussion')}
             >
               Diskussion
-            </a>
+            </button>
           </MenuItem>
           <MenuItem>
-            <a
-              href="#"
+            <button
+              type='button'
               className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
+              onClick={() => onSelect('Meddelande')}
             >
               Meddelande
-            </a>
+            </button>
           </MenuItem>
           {/* <form action="#" method="POST"> */}
-            <MenuItem>
-              <button
-                type="submit"
-                className="block w-full px-4 py-2 text-left text-sm text-gray-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
-              >
-                Hitta gruppmedlem
-              </button>
-            </MenuItem>
+          <MenuItem>
+            <button
+              type="button"
+              className="block w-full px-4 py-2 text-left text-sm text-gray-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
+              onClick={() => onSelect("Hitta gruppmedlem")}
+            >
+              Hitta gruppmedlem
+            </button>
+          </MenuItem>
           {/* </form> */}
         </div>
       </MenuItems>
