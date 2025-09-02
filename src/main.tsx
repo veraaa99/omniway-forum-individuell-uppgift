@@ -6,16 +6,18 @@ import Thread from './components/Thread.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { ThreadProvider } from './contexts/ThreadContext.tsx'
 import { dummyThreads } from './data/threads.ts'
+import { UserProvider } from './contexts/UserContext.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ThreadProvider>
-        <App />
-      </ThreadProvider>
+      <UserProvider>
+        <ThreadProvider>
+          <App />
+        </ThreadProvider>
+      </UserProvider>
     )
-    element: <App />
   },
   {
     path: "/thread",

@@ -44,8 +44,11 @@ function UserProvider ({ children }: PropsWithChildren) {
     const createUser: typeof defaultState.actions.createUser = (user) => {
         console.log("User: ", user)
 
-        const updatedUsers = [...users, user]
-        _setUsers(updatedUsers)
+        const isUserNameTaken = users.find((u) => u.userName == user.userName)
+        if(!isUserNameTaken) {
+            const updatedUsers = [...users, user]
+            _setUsers(updatedUsers)
+        }
     }
 
     const setUser = (user: User) => {
