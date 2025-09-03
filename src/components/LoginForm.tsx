@@ -7,7 +7,7 @@ type FormData = {
   password: string
 }
 
-function UserForm() {
+function LoginForm() {
 
   const {
     register,
@@ -18,33 +18,31 @@ function UserForm() {
 
   const { users, actions } = useUser()
 
-  const [passwordError, setPasswordError] = useState<string>("")
+  const [formError, setFormError] = useState<string>("")
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
     if (isSubmitted) {
       reset({ username: "", password: "" })
+        alert("Användare inloggad!")
     }
     setIsSubmitted(false)
-    setPasswordError("")
+    setFormError("")
     
   }, [isSubmitted, reset])
   
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    const _user: User = { userName: data.username, password: data.password.trim() }
+    const _user: User = { userName: data.username.trim(), password: data.password.trim() }
     const existingUser = users.find((u) => u.userName == _user.userName)
 
     if(!existingUser) {
-      actions.createUser(_user)
-      actions.setUser(_user)
-
-      setIsSubmitted(true)      
+      setFormError("Användaren kunde inte hittas")    
     } else {
       if(existingUser.password == _user.password) {
         actions.setUser(_user)
         setIsSubmitted(true)
       } else {
-        setPasswordError("Fel lösenord")
+        setFormError("Fel lösenord")
         return
       }
     }
@@ -69,7 +67,7 @@ function UserForm() {
         </div>
 
         <div>
-          {passwordError && <p className="text-red-500 text-sm italic mb-3">{passwordError}</p>}
+          {formError && <p className="text-red-500 text-sm italic mb-3">{formError}</p>}
         </div>
 
         <div>
@@ -84,4 +82,4 @@ function UserForm() {
   )
 }
 
-export default UserForm
+export default LoginForm
