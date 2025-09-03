@@ -1,14 +1,16 @@
 import Header from "./components/Header"
+import LoginForm from "./components/LoginForm"
+import RegisterForm from "./components/RegisterForm"
 import ThreadForm from "./components/ThreadForm"
 import ThreadList from "./components/ThreadList"
-import UserForm from "./components/UserForm"
 
 function App() {
 
   return (
     <>
       <Header />
-      <UserForm />
+      <LoginForm />
+      <RegisterForm />
       <ThreadList />
     </>
   )
