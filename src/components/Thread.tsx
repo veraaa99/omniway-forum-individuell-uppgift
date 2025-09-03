@@ -45,7 +45,7 @@ export default function Thread({ thread }: ThreadProps) {
         Svara
       </button>
       {showCommentForm && <CommentForm thread={thread} onClose={handleCloseForm} />}
-      <CommentsList threadId={thread.id} />
+      <CommentsList threadId={thread.id} threadCategory={thread.category} />
     </div>
   );
 }
