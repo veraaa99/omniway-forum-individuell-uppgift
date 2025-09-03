@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useThread } from '../contexts/ThreadContext';
-import { dummyUsers } from '../data/users';
+import { useUser } from '../contexts/UserContext';
+import { useState } from 'react';
 
 type ThreadFormProps = {
     onClose?: () => void;
@@ -10,6 +11,9 @@ type ThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
 
 export default function ThreadForm({ onClose }: ThreadFormProps) {
     const { threads, actions } = useThread();
+    const { currentUser } = useUser();
+
+    const [errorMessage, seterrorMessage] = useState<string | null>(null)
 
     const creationDate = new Date().toLocaleDateString("sv-SE");
 
@@ -24,13 +28,19 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
 
     const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
 
+        if (!currentUser) {
+            seterrorMessage('Du måste vara inloggad för att skapa en tråd')
+
+            return
+        }
+
         const newThread: Thread = {
             id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
             title: data.title,
             category: data.category,
             description: data.description,
             creationDate: creationDate,
-            creator: { userName: dummyUsers[0].userName, password: '' }
+            creator: { userName: currentUser.userName, password: '' }
         }
 
         actions.createThread(newThread);
@@ -48,13 +58,13 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                 <div className="mb-4">
                     <label className="block mb-2" >Kategori: </label>
                     <div className=''>
-                        <select 
-                          className='border'
+                        <select
+                            className='border'
                             required
                             {...register("category")}
                             onChange={e => setValue("category", e.target.value as ThreadCategory, { shouldValidate: true })}
-                          >
-                            <option value="THREAD">Välj:</option> 
+                        >
+                            <option value="THREAD">Välj:</option>
                             <option value="QNA">QNA</option>
                             <option value="Diskussion">Diskussion</option>
                             <option value="Meddelande">Meddelande</option>
@@ -63,14 +73,14 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-3">
                     <label>Beskrivning: </label>
                     <textarea className='border w-full p-2 rounded' required id='description' {...register("description")} />
                 </div>
-
-                <button 
-                type='submit' 
-                className='bg-green-800 text-white p-3 rounded'
+                {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)}
+                <button
+                    type='submit'
+                    className='bg-green-800 text-white p-3 rounded'
                 >
                     Publicera
                 </button>

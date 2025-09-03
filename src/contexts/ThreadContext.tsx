@@ -53,12 +53,14 @@ function ThreadProvider({ children }: PropsWithChildren) {
     const newComments = [...comments, comment]
     setComments(newComments)
     LocalStorageService.setItem<ForumComment[]>('@forum/comments', newComments)
+
+    setComments(newComments)
   }
 
   const getComments = () => {
     const _comments: ForumComment[] = LocalStorageService.getItem('@forum/comments', dummyComments)
     setComments(_comments)
-  } 
+  }
 
   const isQNAAnswered: typeof defaultState.actions.isQNAAnswered = (threadId: number): boolean => {
     const thread = threads.find(t => t.id === threadId)
