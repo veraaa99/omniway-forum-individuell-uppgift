@@ -5,6 +5,7 @@ import { IoMdMail } from "react-icons/io";
 import { MdLibraryBooks } from "react-icons/md";
 
 import { useUser } from "../contexts/UserContext";
+import LogOutButton from "./LogOutButton";
 import { useState } from "react";
 import Modal from 'react-modal'
 import LoginForm from "./LoginForm";
@@ -41,6 +42,10 @@ function Header() {
         <div className="flex flex-col items-center cursor-pointer" onClick={() => { if (!currentUser) setshowLogin(true) }}>
           <CgProfile />
           <p className="text-black text-sm">{currentUser == null ? '' : currentUser.userName}</p>
+        </div>
+          
+        <div className="flex flex-col items-center text-center justify-center">
+           <LogOutButton />
         </div>
 
         <Modal isOpen={showLogin}
