@@ -12,7 +12,7 @@ function RegisterForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors  },
+    formState: { errors },
   } = useForm<FormData>({ defaultValues: { username: "", password: "" } })
 
   const { users, actions } = useUser()
@@ -23,23 +23,23 @@ function RegisterForm() {
   useEffect(() => {
     if (isSubmitted == true) {
       reset({ username: "", password: "" })
-      alert("Användare skapad och inloggad!")
+      // alert("Användare skapad och inloggad!")
     }
-    setIsSubmitted(false)   
-    setFormError("") 
+    setIsSubmitted(false)
+    setFormError("")
   }, [isSubmitted, reset])
-  
+
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     const _user: User = { userName: data.username.trim(), password: data.password.trim() }
     const existingUser = users.find((u) => u.userName == _user.userName)
 
-    if(!existingUser) {
-        actions.createUser(_user)
-        actions.setUser(_user)
-        setIsSubmitted(true)      
+    if (!existingUser) {
+      actions.createUser(_user)
+      actions.setUser(_user)
+      setIsSubmitted(true)
     } else {
-        setFormError("Användarnamnet är redan taget")
-        return
+      setFormError("Användarnamnet är redan taget")
+      return
     }
 
     return
@@ -48,7 +48,7 @@ function RegisterForm() {
   return (
     <div className="w-full max-w-xs">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
-        
+
         <div className="mb-4">
           <label className="block mb-2" >Användarnamn: </label>
           <input className='border' {...register("username", { required: true })} />
@@ -57,7 +57,7 @@ function RegisterForm() {
 
         <div className="mb-6">
           <label className="block mb-2">Lösenord: </label>
-          <input className='border' id='password' {...register("password", { required: true })} />
+          <input type='password' className='border' id='password' {...register("password", { required: true })} />
           {errors.password && errors.password.type === "required" && <p className="text-red-500 text-xs italic mt-1">Vänligen ange ett lösenord</p>}
         </div>
 
