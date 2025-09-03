@@ -22,7 +22,7 @@ export default function ThreadList() {
           <FaArrowLeft />
           <p>Back to threads</p>
         </button>
-        <Thread thread={selectedThread} comments={dummyComments} />
+        <Thread thread={selectedThread} />
       </div>
 
     )
@@ -50,7 +50,6 @@ export default function ThreadList() {
             <ThreadPreview
               key={thread.id}
               thread={thread}
-              comments={dummyComments}
               onClick={() => setselectedThread(thread)}
             />
           ))
