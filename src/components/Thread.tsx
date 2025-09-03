@@ -2,16 +2,18 @@ import { FaUser } from 'react-icons/fa';
 import CommentForm from './CommentForm';
 import { useState } from 'react';
 import CommentsList from './CommentsList';
+import { useThread } from '../contexts/ThreadContext';
 
 type ThreadProps = {
   thread: Thread | QNAThread;
-  comments?: ForumComment[]
 };
 
-export default function Thread({ thread, comments }: ThreadProps) {
-  const threadComments = comments?.filter(c => c.thread === thread.id) ?? [];
-  const answerCount = threadComments.length;
+export default function Thread({ thread }: ThreadProps) {
+  const { comments } = useThread();
   const [showCommentForm, setShowCommentForm] = useState<boolean>(false)
+
+  const threadComments = comments?.filter(c => c.thread === thread.id);
+  const answerCount = threadComments.length;
 
   const handleOpenForm = () => setShowCommentForm(true);
   const handleCloseForm = () => setShowCommentForm(false);
