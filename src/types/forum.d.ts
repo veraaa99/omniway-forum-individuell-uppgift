@@ -12,6 +12,7 @@ type Thread = {
 	creationDate: string;
 	description: string;
 	creator: User;
+	commentsLocked?: boolean;
 }
 
 type QNAThread = Thread & { //Type extension

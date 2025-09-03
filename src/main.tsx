@@ -4,9 +4,9 @@ import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { ThreadProvider } from './contexts/ThreadContext.tsx'
-import { dummyThreads } from './data/threads.ts'
 import { UserProvider } from './contexts/UserContext.tsx'
-import Thread from './components/Thread.tsx'
+import PrivateRoute from './components/routes/PrivateRoute.tsx'
+import ThreadForm from './components/ThreadForm.tsx'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +17,17 @@ const router = createBrowserRouter([
           <App />
         </ThreadProvider>
       </UserProvider>
-    )
+    ),
+    children: [
+      {
+        path: "create-thread",
+        element: (
+          <PrivateRoute>
+            <ThreadForm />
+          </PrivateRoute>
+        )
+      },
+    ]
   }
 ])
 
