@@ -11,7 +11,6 @@ function App() {
       <Header />
       <main>
         <Outlet />
-        <ThreadList />
       </main>
       <LoginForm />
       <RegisterForm />
