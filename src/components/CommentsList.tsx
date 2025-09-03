@@ -3,9 +3,10 @@ import Comment from "./Comment";
 
 type CommentsListProps = {
   threadId: Thread['id'];
+  threadCategory: Thread['category']
 }
 
-function CommentsList({ threadId }: CommentsListProps) {
+function CommentsList({ threadId, threadCategory }: CommentsListProps) {
   const { comments } = useThread();
 
   const threadComments = comments.filter(
@@ -21,7 +22,7 @@ function CommentsList({ threadId }: CommentsListProps) {
       <h3 className="text-xl font-bold text-white my-4">Alla kommentar</h3>
       <div>
         {
-          threadComments.map((c) => <Comment key={c.id} comment={c} />)
+          threadComments.map((c) => <Comment key={c.id} comment={c} thread={threadCategory}/>)
         }
       </div>
     </div>
