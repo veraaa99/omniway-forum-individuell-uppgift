@@ -4,11 +4,14 @@ import { Navigate } from "react-router";
 
 function PrivateRoute({ children }: PropsWithChildren) {
   const { currentUser } = useUser();
-
+  
   if (!currentUser) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
-  return children;
+  return
+  <> 
+    { children }
+  </>
 }
 export default PrivateRoute;
