@@ -1,7 +1,6 @@
 import { useThread } from '../contexts/ThreadContext';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import ThreadPreview from './ThreadPreview';
-import { dummyComments } from '../data/comments';
 import { useState } from 'react';
 import Thread from './Thread';
 import { FaArrowLeft } from 'react-icons/fa';

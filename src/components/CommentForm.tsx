@@ -39,7 +39,7 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
     setShowLoginPopup(false);
   };
 
-  console.log(errors);
+  // console.log(errors);
   return (
     <div onClick={onClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
       <div onClick={(e) => e.stopPropagation()} className="relative bg-white max-w-screen-sm shadow-md rounded px-8 pt-6 pb-8 my-6 flex flex-col justify-center">
