@@ -9,7 +9,6 @@ type CommentProps = {
 function Comment({ comment, thread }: CommentProps) {
   const { actions } = useThread()
 
-
   // if (!comment.creator) {
   //   return <p className="text-white">Kommentar saknar skapare</p>
   // }
