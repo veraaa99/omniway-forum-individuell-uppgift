@@ -35,20 +35,19 @@ export default function ThreadList() {
   if (selectedThread) {
 
     return (
-      <div className='container mx-auto px-4 lg: max-w-6xl'>
+      <div className='container mx-auto px-4 pt-20 lg:max-w-6xl'>
         <button onClick={() => setselectedThread(null)} className='flex gap-2 items-center mb-3'>
           <FaArrowLeft />
-          <p>Back to threads</p>
+          <p>Tillbaka till forum</p>
         </button>
         <Thread thread={selectedThread} />
       </div>
-
     )
   }
 
   return (
     <div className='container mx-auto px-4 lg:max-w-6xl'>
-      <h1 className='text-3xl text-center font-bold text-blue-950 my-4'>Forum</h1>
+      <h1 className='text-3xl text-center font-bold text-blue-950 mt-20'>Forum</h1>
 
       <div className='flex gap-2 items-center mb-4 text-2xl font-semibold cursor-pointer' onClick={handleCreateThreadButton}>
         <IoIosAddCircleOutline /><p>Skapa ny tråd</p>
