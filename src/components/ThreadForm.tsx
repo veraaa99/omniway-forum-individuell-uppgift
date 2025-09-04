@@ -23,6 +23,12 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
 
     const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
 
+        if (!currentUser) {
+            seterrorMessage('Du måste vara inloggad för att skapa en tråd')
+
+            return
+        }
+
         if (currentUser) {
             const newThread: Thread = {
                 id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
@@ -31,6 +37,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                 description: data.description,
                 creationDate: creationDate,
                 creator: { userName: currentUser.userName, password: currentUser.password }
+                commentsLocked: data.commentsLocked
             }
             actions.createThread(newThread);
             onClose?.();
@@ -72,6 +79,15 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     <textarea className='border w-full p-2 rounded' id='description' {...register("description", { required: true })} />
                     {errors.description && errors.description.type === "required" && <p className="text-red-600 text-sm italic">Vänligen ange en beskrivning till tråden</p>}
                 </div>
+
+                <div className='mb-3'>
+                    <label className="inline-flex items-center">
+                        <input type="checkbox" className="form-checkbox" {...register("commentsLocked")} />
+                        <span className="ml-2">Låsa kommentarer?</span>
+                    </label>
+                </div>
+                {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)}
+
                 <button
                     type='submit'
                     className='bg-green-800 text-white p-3 rounded mt-5'
