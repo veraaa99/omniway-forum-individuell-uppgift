@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useThread } from '../contexts/ThreadContext';
 import { useUser } from '../contexts/UserContext';
+import { useState } from 'react';
 
 type CommentFormProps = {
   thread: Thread | QNAThread;
@@ -15,10 +16,12 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
   const { actions } = useThread()
   const { currentUser } = useUser()
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
   const onSubmit = (data: FormData) => {
     if (!currentUser) {
-      alert("Du måste vara inloggad för att kommentera.");
+      // alert("Du måste vara inloggad för att kommentera.");
+      setShowLoginPopup(true)
       return;
     }
 
@@ -31,7 +34,10 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
 
     actions.addComment(newComment);
     onClose();
-   };
+  };
+  const closeLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
 
   console.log(errors);
   return (
@@ -71,12 +77,25 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
             )}
           </div>
           <button
-              type="submit"
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            type="submit"
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
           >
             Skicka Kommentar
           </button>
         </form>
+        {showLoginPopup && (
+          <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
+            <div className="bg-white text-black p-6 rounded shadow-lg text-center max-w-sm w-full">
+              <p className="mb-4 text-lg font-semibold">Du måste vara inloggad innan du lämnar en kommentar.</p>
+              <button
+                onClick={closeLoginPopup}
+                className="mt-2 px-4 py-2 bg-blue-950 text-white rounded hover:bg-blue-700"
+              >
+                Stäng
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -20,8 +20,8 @@ function Comment({ comment, thread }: CommentProps) {
         <p className='font-semibold text-gray-200'>{comment.creator.userName}</p>
       </div>
       <p className='text-gray-200 my-3'>{comment.content}</p>
-      {thread === "QNA" && !actions.isQNAAnswered(comment.id) && 
-      <button className='bg-green-900 text-white text-sm rounded p-2'>Markera som svar</button>}
+      {thread === "QNA" && !actions.isQNAAnswered(comment.id) &&
+        <button className='bg-green-900 text-white text-sm rounded p-2'>Markera som svar</button>}
 
     </div>
   )

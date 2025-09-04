@@ -24,7 +24,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
     const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
 
         if (!currentUser) {
-            seterrorMessage('Du måste vara inloggad för att skapa en tråd')
+            // seterrorMessage('Du måste vara inloggad för att skapa en tråd')
 
             return
         }
@@ -36,7 +36,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                 category: data.category,
                 description: data.description,
                 creationDate: creationDate,
-                creator: { userName: currentUser.userName, password: currentUser.password }
+                creator: { userName: currentUser.userName, password: currentUser.password },
                 commentsLocked: data.commentsLocked
             }
             actions.createThread(newThread);
@@ -86,7 +86,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                         <span className="ml-2">Låsa kommentarer?</span>
                     </label>
                 </div>
-                {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)}
+                {/* {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)} */}
 
                 <button
                     type='submit'
