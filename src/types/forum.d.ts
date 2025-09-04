@@ -1,5 +1,7 @@
 type ThreadCategory = "NoCategory" | "QNA" | "Diskussion" | "Meddelande" | "Hitta gruppmedlem";
 
+type ThreadCategoryType = Thread | QNAThread
+
 type User = {
 	userName: string;
 	password: string
@@ -27,4 +29,3 @@ type ForumComment = {
 	content: string;
 	creator: User;
 }
-

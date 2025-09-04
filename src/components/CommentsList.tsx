@@ -22,7 +22,7 @@ function CommentsList({ threadId, threadCategory }: CommentsListProps) {
       <h3 className="text-xl font-bold text-white my-4">Alla kommentar</h3>
       <div>
         {
-          threadComments.map((c) => <Comment key={c.id} comment={c} thread={threadCategory}/>)
+          threadComments.map((c) => <Comment key={c.id} comment={c} threadCategory={threadCategory} threadId={threadId} />)
         }
       </div>
     </div>

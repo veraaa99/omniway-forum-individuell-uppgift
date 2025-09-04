@@ -4,13 +4,14 @@ import { dummyThreads } from "../data/threads";
 import { dummyComments } from "../data/comments";
 
 type ThreadState = {
-  threads: Thread[] | QNAThread[];
+  threads: ThreadCategoryType[];
   comments: ForumComment[];
   actions: {
-    createThread: (thread: Thread) => void;
-    getThreadByID: (threadId: Thread['id']) => Thread | undefined;
+    createThread: (thread: ThreadCategoryType) => void;
+    updateQNAThread: (threadIndex: number, updatedThread: QNAThread) => void;
+    getThreadByID: (threadId: ThreadCategoryType['id']) => Thread | undefined;
     addComment: (comment: ForumComment) => void;
-    isQNAAnswered: (threadId: Thread['id']) => boolean;
+    isQNAAnswered: (threadId: ThreadCategoryType['id']) => boolean;
   }
 };
 
@@ -19,6 +20,7 @@ const defaultState: ThreadState = {
   comments: [],
   actions: {
     createThread: () => { },
+    updateQNAThread: () => {},
     getThreadByID: () => undefined,
     addComment: () => { },
     isQNAAnswered: () => false,
@@ -28,7 +30,7 @@ const defaultState: ThreadState = {
 const ThreadContext = createContext<ThreadState>(defaultState);
 
 function ThreadProvider({ children }: PropsWithChildren) {
-  const [threads, setThreads] = useState<Thread[]>([]);
+  const [threads, setThreads] = useState<ThreadCategoryType[]>([]);
   const [comments, setComments] = useState<ForumComment[]>([]);
 
   useEffect(() => {
@@ -37,15 +39,23 @@ function ThreadProvider({ children }: PropsWithChildren) {
   }, [])
 
   const _getThreads = () => {
-    const _threads: Thread[] | QNAThread[] = LocalStorageService.getItem('@forum/threads', dummyThreads);
+    const _threads: ThreadCategoryType[] = LocalStorageService.getItem('@forum/threads', dummyThreads);
     setThreads(_threads)
   }
 
   const createThread: typeof defaultState.actions.createThread = (thread) => {
     const newThreads = [...threads, thread]
     setThreads(newThreads)
-    LocalStorageService.setItem<Thread[]>('@forum/threads', newThreads)
+    LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', newThreads)
   }
+
+  const updateQNAThread: typeof defaultState.actions.updateQNAThread = (threadIndex: number, updatedThread: QNAThread) => {
+    const newThreads = [...threads]
+    newThreads[threadIndex] = updatedThread
+    setThreads(newThreads)
+    LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', newThreads)
+  }
+
   const getThreadByID: typeof defaultState.actions.getThreadByID = (threadId: number): Thread | undefined => {
     return threads.find(thread => thread.id === threadId)
   }
@@ -67,7 +77,9 @@ function ThreadProvider({ children }: PropsWithChildren) {
 
     if (thread && thread.category === "QNA") {
       const qnaThread = thread as QNAThread
-      return qnaThread.isAnswered
+
+        return qnaThread.isAnswered
+
     }
 
     return false;
@@ -75,6 +87,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
 
   const actions: typeof defaultState.actions = {
     createThread,
+    updateQNAThread,
     getThreadByID,
     addComment,
     isQNAAnswered,
