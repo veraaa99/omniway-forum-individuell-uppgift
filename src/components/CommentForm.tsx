@@ -41,7 +41,7 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
 
   console.log(errors);
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
+    <div onClick={onClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
       <div className="relative bg-white max-w-screen-sm shadow-md rounded px-8 pt-6 pb-8 my-6 flex flex-col justify-center">
         <button
           onClick={onClose}
@@ -84,7 +84,7 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
           </button>
         </form>
         {showLoginPopup && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
+          <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
             <div className="bg-white text-black p-6 rounded shadow-lg text-center max-w-sm w-full">
               <p className="mb-4 text-lg font-semibold">Du måste vara inloggad innan du lämnar en kommentar.</p>
               <button
