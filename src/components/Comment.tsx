@@ -10,9 +10,9 @@ function Comment({ comment, thread }: CommentProps) {
   const { actions } = useThread()
 
 
-  if (!comment.creator) {
-    return <p className="text-white">Kommentar saknar skapare</p>
-  }
+  // if (!comment.creator) {
+  //   return <p className="text-white">Kommentar saknar skapare</p>
+  // }
   return (
     <div className='p-4 mt-4 rounded-lg mb-4 border border-gray-300 bg-blue-950'>
       <div className='flex gap-2 items-center'>
