@@ -13,7 +13,7 @@ export default function Thread({ thread }: ThreadProps) {
   const { comments, actions } = useThread();
   const { currentUser } = useUser();
   const [showCommentForm, setShowCommentForm] = useState<boolean>(false)
-  const [commentsLocked, setCommentsLocked] = useState(thread.commentsLocked)
+  const [commentsLocked, setCommentsLocked] = useState<boolean | undefined>(thread.commentsLocked)
 
   const threadComments = comments?.filter(c => c.thread === thread.id);
   const answerCount = threadComments.length;
