@@ -56,7 +56,7 @@ export default function Thread({ thread }: ThreadProps) {
       )}
 
       {showCommentForm && !commentsLocked && <CommentForm thread={thread} onClose={handleCloseForm} />}
-      
+
       {commentsLocked && <p className="text-orange-600 font-semibold mt-3">Kommentarer är låsta för denna tråd.</p>}
 
       {currentUser && thread.creator.userName === currentUser.userName && (
@@ -70,7 +70,6 @@ export default function Thread({ thread }: ThreadProps) {
         </div>
       )}
 
-      <CommentsList threadId={thread.id} />
       <CommentsList threadId={thread.id} threadCategory={thread.category} />
     </div>
   );
