@@ -46,7 +46,7 @@ function UserProvider ({ children }: PropsWithChildren) {
     }
 
     const createUser: typeof defaultState.actions.createUser = (user) => {
-        console.log("User: ", user)
+        // console.log("User: ", user)
 
         const updatedUsers = [...users, user]
         _setUsers(updatedUsers)

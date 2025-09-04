@@ -7,6 +7,9 @@ import { ThreadProvider } from './contexts/ThreadContext.tsx'
 import { UserProvider } from './contexts/UserContext.tsx'
 import PrivateRoute from './components/routes/PrivateRoute.tsx'
 import ThreadForm from './components/ThreadForm.tsx'
+import Modal from 'react-modal'
+
+Modal.setAppElement('#root')
 
 const router = createBrowserRouter([
   {
