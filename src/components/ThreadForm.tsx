@@ -40,7 +40,8 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
             category: data.category,
             description: data.description,
             creationDate: creationDate,
-            creator: { userName: currentUser.userName, password: '' }
+            creator: { userName: currentUser.userName, password: '' },
+            commentsLocked: data.commentsLocked
         }
 
         actions.createThread(newThread);
@@ -76,6 +77,13 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                 <div className="mb-3">
                     <label>Beskrivning: </label>
                     <textarea className='border w-full p-2 rounded' required id='description' {...register("description")} />
+                </div>
+
+                <div className='mb-3'>
+                    <label className="inline-flex items-center">
+                        <input type="checkbox" className="form-checkbox" {...register("commentsLocked")} />
+                        <span className="ml-2">Låsa kommentarer?</span>
+                    </label>
                 </div>
                 {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)}
                 <button

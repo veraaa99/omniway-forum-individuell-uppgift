@@ -11,6 +11,7 @@ type ThreadState = {
     getThreadByID: (threadId: Thread['id']) => Thread | undefined;
     addComment: (comment: ForumComment) => void;
     isQNAAnswered: (threadId: Thread['id']) => boolean;
+    toggleCommentsLock: (threadId: Thread['id']) => void;
   }
 };
 
@@ -22,6 +23,7 @@ const defaultState: ThreadState = {
     getThreadByID: () => undefined,
     addComment: () => { },
     isQNAAnswered: () => false,
+    toggleCommentsLock: () => { }
   }
 };
 
@@ -66,11 +68,22 @@ function ThreadProvider({ children }: PropsWithChildren) {
     const thread = threads.find(t => t.id === threadId)
 
     if (thread && thread.category === "QNA") {
-      const qnaThread = thread as QNAThread
-      return qnaThread.isAnswered
+      const qnaThread = thread as QNAThread;
+      return qnaThread.isAnswered;
     }
 
     return false;
+  }
+
+  const toggleCommentsLock: typeof defaultState.actions.toggleCommentsLock = (threadId: number): void => {
+    const updatedThreads = threads.map((thread) =>
+      thread.id === threadId
+        ? { ...thread, commentsLocked: !thread.commentsLocked }
+        : thread
+    );
+
+    setThreads(updatedThreads);
+    LocalStorageService.setItem('@forum/threads', updatedThreads);
   }
 
   const actions: typeof defaultState.actions = {
@@ -78,6 +91,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
     getThreadByID,
     addComment,
     isQNAAnswered,
+    toggleCommentsLock
   }
 
   return (
