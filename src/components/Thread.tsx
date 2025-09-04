@@ -71,6 +71,7 @@ export default function Thread({ thread }: ThreadProps) {
       )}
 
       <CommentsList threadId={thread.id} />
+      <CommentsList threadId={thread.id} threadCategory={thread.category} />
     </div>
   );
 }

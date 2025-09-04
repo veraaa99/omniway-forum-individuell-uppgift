@@ -13,7 +13,7 @@ function LoginForm() {
     register,
     handleSubmit,
     reset,
-    formState: { errors  },
+    formState: { errors },
   } = useForm<FormData>({ defaultValues: { username: "", password: "" } })
 
   const { users, actions } = useUser()
@@ -24,21 +24,21 @@ function LoginForm() {
   useEffect(() => {
     if (isSubmitted) {
       reset({ username: "", password: "" })
-        alert("Användare inloggad!")
+      // alert("Användare inloggad!")
     }
     setIsSubmitted(false)
     setFormError("")
-    
+
   }, [isSubmitted, reset])
-  
+
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     const _user: User = { userName: data.username.trim(), password: data.password.trim() }
     const existingUser = users.find((u) => u.userName == _user.userName)
 
-    if(!existingUser) {
-      setFormError("Användaren kunde inte hittas")    
+    if (!existingUser) {
+      setFormError("Användaren kunde inte hittas")
     } else {
-      if(existingUser.password == _user.password) {
+      if (existingUser.password == _user.password) {
         actions.setUser(_user)
         setIsSubmitted(true)
       } else {
@@ -53,7 +53,7 @@ function LoginForm() {
   return (
     <div className="w-full max-w-xs">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
-        
+
         <div className="mb-4">
           <label className="block mb-2" >Användarnamn: </label>
           <input className='border' {...register("username", { required: true })} />
@@ -62,7 +62,7 @@ function LoginForm() {
 
         <div className="mb-6">
           <label className="block mb-2">Lösenord: </label>
-          <input className='border' id='password' {...register("password", { required: true })} />
+          <input type='password' className='border' id='password' {...register("password", { required: true })} />
           {errors.password && errors.password.type === "required" && <p className="text-red-500 text-xs italic mt-1">Vänligen ange ett lösenord</p>}
         </div>
 
