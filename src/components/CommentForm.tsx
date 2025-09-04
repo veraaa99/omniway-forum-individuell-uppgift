@@ -42,7 +42,7 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
   console.log(errors);
   return (
     <div onClick={onClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
-      <div className="relative bg-white max-w-screen-sm shadow-md rounded px-8 pt-6 pb-8 my-6 flex flex-col justify-center">
+      <div onClick={(e) => e.stopPropagation()} className="relative bg-white max-w-screen-sm shadow-md rounded px-8 pt-6 pb-8 my-6 flex flex-col justify-center">
         <button
           onClick={onClose}
           className="hover:text-black shadow appearance-none border rounded font-semibold text-xl py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline absolute right-2 top-2"
