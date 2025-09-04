@@ -18,7 +18,7 @@ function RegisterForm() {
   const { users, actions } = useUser()
 
   const [formError, setFormError] = useState<string>("")
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
   useEffect(() => {
     if (isSubmitted == true) {

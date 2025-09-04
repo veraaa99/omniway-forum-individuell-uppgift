@@ -16,9 +16,9 @@ import { HiMenu, HiX } from "react-icons/hi";
 function Header() {
 
   const { currentUser } = useUser()
-  const [showLogin, setshowLogin] = useState(false)
-  const [showRegister, setshowRegister] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [showLogin, setshowLogin] = useState<boolean>(false)
+  const [showRegister, setshowRegister] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
   const NavItems = () => (
     <>
