@@ -1,7 +1,6 @@
 import { useThread } from '../contexts/ThreadContext';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import ThreadPreview from './ThreadPreview';
-import { dummyComments } from '../data/comments';
 import { useState } from 'react';
 import Thread from './Thread';
 import { FaArrowLeft } from 'react-icons/fa';
@@ -35,27 +34,26 @@ export default function ThreadList() {
   if (selectedThread) {
 
     return (
-      <div className='container mx-auto px-4 lg: max-w-6xl'>
+      <div className='container mx-auto px-4 pt-20 lg:max-w-6xl'>
         <button onClick={() => setselectedThread(null)} className='flex gap-2 items-center mb-3'>
           <FaArrowLeft />
-          <p>Back to threads</p>
+          <p>Tillbaka till forum</p>
         </button>
         <Thread thread={selectedThread} />
       </div>
-
     )
   }
 
   return (
     <div className='container mx-auto px-4 lg:max-w-6xl'>
-      <h1 className='text-3xl text-center font-bold text-blue-950 my-4'>Forum</h1>
+      <h1 className='text-3xl text-center font-bold text-blue-950 mt-20'>Forum</h1>
 
       <div className='flex gap-2 items-center mb-4 text-2xl font-semibold cursor-pointer' onClick={handleCreateThreadButton}>
         <IoIosAddCircleOutline /><p>Skapa ny tråd</p>
       </div>
 
       {showLoginPopup && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
+        <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
           <div className="bg-white text-black p-6 rounded shadow-lg text-center max-w-sm w-full">
             <p className="mb-4 text-lg font-semibold">Du måste vara inloggad för att skapa en tråd.</p>
             <button
