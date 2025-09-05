@@ -30,17 +30,31 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
         }
 
         if (currentUser) {
-            const newThread: Thread = {
-                id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
-                title: data.title,
-                category: data.category,
-                description: data.description,
-                creationDate: creationDate,
-                creator: { userName: currentUser.userName, password: currentUser.password },
-                commentsLocked: data.commentsLocked
-            }
-            actions.createThread(newThread);
-            onClose?.();
+            if(data.category == "QNA") {
+                const newQNAThread: QNAThread = {
+                    id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
+                    title: data.title,
+                    category: data.category,
+                    description: data.description,
+                    creationDate: creationDate,
+                    creator: { userName: currentUser.userName, password: currentUser.password },
+                    isAnswered: false,
+                    commentAnswerId: 0
+                }
+                actions.createThread(newQNAThread);
+                onClose?.();
+            } else {
+                const newThread: Thread = {
+                    id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
+                    title: data.title,
+                    category: data.category,
+                    description: data.description,
+                    creationDate: creationDate,
+                    creator: { userName: currentUser.userName, password: currentUser.password }
+                    commentsLocked: data.commentsLocked
+                }
+                actions.createThread(newThread);
+                onClose?.();
         }
 
         return

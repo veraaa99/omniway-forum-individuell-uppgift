@@ -21,7 +21,7 @@ function CommentsList({ threadId, threadCategory }: CommentsListProps) {
       
       <div>
         {
-          threadComments.map((c) => <Comment key={c.id} comment={c} thread={threadCategory}/>)
+          threadComments.map((c) => <Comment key={c.id} comment={c} threadCategory={threadCategory} threadId={threadId} />)
         }
       </div>
     </div>
