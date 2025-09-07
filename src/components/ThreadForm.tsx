@@ -38,6 +38,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     description: data.description,
                     creationDate: creationDate,
                     creator: { userName: currentUser.userName, password: currentUser.password },
+                    commentsLocked: data.commentsLocked,
                     isAnswered: false,
                     commentAnswerId: 0
                 }
@@ -50,11 +51,12 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     category: data.category,
                     description: data.description,
                     creationDate: creationDate,
-                    creator: { userName: currentUser.userName, password: currentUser.password }
+                    creator: { userName: currentUser.userName, password: currentUser.password },
                     commentsLocked: data.commentsLocked
                 }
                 actions.createThread(newThread);
                 onClose?.();
+            }
         }
 
         return
@@ -112,4 +114,3 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
         </div >
     )
 }
-
