@@ -2,12 +2,11 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useUser } from '../contexts/UserContext'
 import { useEffect, useState } from 'react'
 
-// type FormData = {
-//   userName: string
-//   password: string
-// }
+type RegisterFormProps = {
+  onSuccess: () => void
+}
 
-function RegisterForm() {
+function RegisterForm({ onSuccess }: RegisterFormProps) {
   const {
     register,
     handleSubmit,
@@ -23,7 +22,7 @@ function RegisterForm() {
   useEffect(() => {
     if (isSubmitted == true) {
       reset({ userName: "", password: "" })
-      // alert("Användare skapad och inloggad!")
+      onSuccess()
     }
     setIsSubmitted(false)
     setFormError("")

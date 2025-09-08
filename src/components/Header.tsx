@@ -85,7 +85,7 @@ function Header() {
         className='bg-white p-6 rounded shadow-lg max-w-md mx-auto mt-20 realtive'
         overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50'>
         <button className="absolute top-2 right-2 text-gray-600">X</button>
-        <LoginForm />
+        <LoginForm onSuccess={() => setshowLogin(false)} />
         <p className="text-sm my-4">Har du inget konto än? {''}
           <button className="text-blue-500 underline text-sm" onClick={() => { setshowLogin(false); setshowRegister(true) }}>Skapa konto här</button>
         </p>
@@ -96,7 +96,7 @@ function Header() {
         className='bg-white p-6 rounded shadow-lg max-w-md mx-auto mt-20 realtive'
         overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50'>
         <button className="absolute top-2 right-2 text-gray-600">X</button>
-        <RegisterForm />
+        <RegisterForm onSuccess={() => setshowRegister(false)} />
         <p className="text-sm my-4">Har du redan ett konto? {''}
           <button className="text-blue-500 underline text-sm" onClick={() => { setshowLogin(true); setshowRegister(false) }}>Logga in här</button>
         </p>

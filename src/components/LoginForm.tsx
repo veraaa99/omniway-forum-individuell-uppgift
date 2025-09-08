@@ -2,12 +2,11 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useUser } from '../contexts/UserContext'
 import { useEffect, useState } from 'react'
 
-// type User = {
-//   userName: string
-//   password: string
-// }
+type LoginFormProps = {
+  onSuccess: () => void
+}
 
-function LoginForm() {
+function LoginForm({ onSuccess }: LoginFormProps) {
 
   const {
     register,
@@ -24,7 +23,6 @@ function LoginForm() {
   useEffect(() => {
     if (isSubmitted) {
       reset({ userName: "", password: "" })
-      // alert("Användare inloggad!")
     }
     setIsSubmitted(false)
     setFormError("")
@@ -41,6 +39,7 @@ function LoginForm() {
       if (existingUser.password == _user.password) {
         actions.setUser(_user)
         setIsSubmitted(true)
+        onSuccess()
       } else {
         setFormError("Fel lösenord")
         return
