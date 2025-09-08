@@ -2,10 +2,10 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useUser } from '../contexts/UserContext'
 import { useEffect, useState } from 'react'
 
-type FormData = {
-  username: string
-  password: string
-}
+// type FormData = {
+//   userName: string
+//   password: string
+// }
 
 function RegisterForm() {
   const {
@@ -13,7 +13,7 @@ function RegisterForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({ defaultValues: { username: "", password: "" } })
+  } = useForm<User>({ defaultValues: { userName: "", password: "" } })
 
   const { users, actions } = useUser()
 
@@ -22,15 +22,15 @@ function RegisterForm() {
 
   useEffect(() => {
     if (isSubmitted == true) {
-      reset({ username: "", password: "" })
+      reset({ userName: "", password: "" })
       // alert("Användare skapad och inloggad!")
     }
     setIsSubmitted(false)
     setFormError("")
   }, [isSubmitted, reset])
 
-  const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    const _user: User = { userName: data.username.trim(), password: data.password.trim() }
+  const onSubmit: SubmitHandler<User> = (data: User) => {
+    const _user: User = { userName: data.userName.trim(), password: data.password.trim() }
     const existingUser = users.find((u) => u.userName == _user.userName)
 
     if (!existingUser) {
@@ -51,8 +51,8 @@ function RegisterForm() {
 
         <div className="mb-4">
           <label className="block mb-2" >Användarnamn: </label>
-          <input className='border' {...register("username", { required: true })} />
-          {errors.username && errors.username.type === "required" && <p className="text-red-500 text-xs italic mt-1">Vänligen ange ett användarnamn</p>}
+          <input className='border' {...register("userName", { required: true })} />
+          {errors.userName && errors.userName.type === "required" && <p className="text-red-500 text-xs italic mt-1">Vänligen ange ett användarnamn</p>}
         </div>
 
         <div className="mb-6">
