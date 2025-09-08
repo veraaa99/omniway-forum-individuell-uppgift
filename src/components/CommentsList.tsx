@@ -9,10 +9,10 @@ type CommentsListProps = {
 function CommentsList({ threadId, threadCategory }: CommentsListProps) {
   const { comments } = useThread();
 
-  const threadComments = comments.filter(
+  let threadComments = comments.filter(
     (c) => c.thread === threadId
   );
-
+  
   return (
     <div className="container mx-auto px-4 lg:max-w-6xl mt-6">
      {

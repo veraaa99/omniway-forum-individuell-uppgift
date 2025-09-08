@@ -49,10 +49,11 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
         commentAnswerId: comment.id
       }
       
-      const threadIndex = threads.findIndex(
-        (t) => t.id === threadId
-      );  
-      actions.updateQNAThread(threadIndex, updatedThread)
+      // const threadIndex = threads.findIndex(
+      //   (t) => t.id === threadId
+      // ); 
+
+      actions.updateThread(updatedThread)
     }
   }
 
