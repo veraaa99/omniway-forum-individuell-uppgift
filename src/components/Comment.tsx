@@ -1,5 +1,7 @@
 import { FaUser } from "react-icons/fa"
 import { useThread } from "../contexts/ThreadContext";
+import { useUser } from "../contexts/UserContext";
+import { useState } from "react";
 
 type CommentProps = {
   comment: ForumComment;
@@ -10,6 +12,9 @@ type CommentProps = {
 function Comment({ comment, threadCategory, threadId }: CommentProps) {
 
   const { actions, threads } = useThread()
+  const { currentUser } = useUser()
+
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
   let isThreadAnswered = actions.isQNAAnswered(threadId)
 
@@ -25,6 +30,11 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
   );   
 
   const handleToggleIsAnswered = () => {
+    if (!currentUser) {
+      setShowLoginPopup(true)
+      return;
+    }
+
     if(_thread && !isThreadAnswered) {
 
       const updatedThread: QNAThread = { 
@@ -46,6 +56,10 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
     }
   }
 
+  const closeLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
+
   if (!comment.creator) {
     return <p className="text-white">Kommentar saknar skapare</p>
   }
@@ -60,6 +74,22 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
       { threadCategory === "QNA" && 
       <button onClick={handleToggleIsAnswered} disabled={isThreadAnswered} className={`bg-green-900 text-white text-sm rounded p-2 ${isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'bg-green-900' : 'bg-neutral-500'}`}>{isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'Svar' : 'Markera som svar'}</button>
       }
+
+      { showLoginPopup && (
+          <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
+            <div className="bg-white text-black p-6 rounded shadow-lg text-center max-w-sm w-full">
+              <p className="mb-4 text-lg font-semibold">Du måste vara inloggad för att markera en kommentar som svar.</p>
+              <button
+                onClick={closeLoginPopup}
+                className="mt-2 px-4 py-2 bg-blue-950 text-white rounded hover:bg-blue-700"
+              >
+                Stäng
+              </button>
+            </div>
+          </div>
+        )
+      }
+
     </div>
   )
 }
