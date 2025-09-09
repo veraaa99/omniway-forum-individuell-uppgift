@@ -11,7 +11,7 @@ type EditThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
 
 export default function EditThreadForm({ thread, onClose }: EditThreadFormProps) {
     const { actions } = useThread();
-    const { currentUser } = useUser();
+    const { users, currentUser } = useUser();
 
     const updatedDate = new Date().toLocaleDateString("sv-SE");
 
@@ -26,8 +26,9 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
         if (!currentUser) {
             return
         }
+        const _user = users.find((u) => u == thread.creator)
 
-        if (currentUser) {
+        if (currentUser && _user) {
             if(data.category == "QNA") {
                 const qnaThread = thread as QNAThread;
                 const newQNAThread: QNAThread = {
@@ -36,7 +37,7 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                     category: data.category,
                     description: data.description,
                     creationDate: updatedDate,
-                    creator: { userName: currentUser.userName, password: currentUser.password },
+                    creator: _user,
                     commentsLocked: data.commentsLocked,
                     isAnswered: qnaThread.isAnswered,
                     commentAnswerId: qnaThread.commentAnswerId
@@ -51,7 +52,7 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                     category: data.category,
                     description: data.description,
                     creationDate: updatedDate,
-                    creator: { userName: currentUser.userName, password: currentUser.password },
+                    creator: _user,
                     commentsLocked: data.commentsLocked
                 }
                 actions.updateThread(newThread);

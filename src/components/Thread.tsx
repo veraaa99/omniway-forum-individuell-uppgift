@@ -57,7 +57,7 @@ export default function Thread({ thread }: ThreadProps) {
       </div>
 
       <p className='text-gray-200 my-3'>{updatedThread.description}</p>
-      { currentUser && currentUser.userName == updatedThread.creator.userName &&
+      { (currentUser?.userName == updatedThread.creator.userName || currentUser?.isModerator) &&
         <div className='mt-5 mb-5'>
             <button className='rounded-md py-1 px-2 border-white border-2 text-white text-sm hover:bg-blue-400'
               onClick={() => setIsModalOpen(true)}>
@@ -89,7 +89,7 @@ export default function Thread({ thread }: ThreadProps) {
 
       {commentsLocked && <p className="text-orange-600 font-semibold mt-3">Kommentarer är låsta för denna tråd.</p>}
 
-      { currentUser && updatedThread.creator.userName === currentUser.userName && (
+      { (currentUser?.userName == updatedThread.creator.userName || currentUser?.isModerator) &&
         <div className="mt-3">
           <button
             className="bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500"
@@ -98,7 +98,7 @@ export default function Thread({ thread }: ThreadProps) {
             {commentsLocked ? 'Låsa upp Kommentar' : 'Låsa Kommentar'}
           </button>
         </div>
-      )}
+      }
 
       <CommentsList threadId={updatedThread.id} threadCategory={updatedThread.category} />
     </div>

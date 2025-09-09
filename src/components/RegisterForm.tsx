@@ -29,7 +29,13 @@ function RegisterForm({ onSuccess }: RegisterFormProps) {
   }, [isSubmitted, reset])
 
   const onSubmit: SubmitHandler<User> = (data: User) => {
-    const _user: User = { userName: data.userName.trim(), password: data.password.trim() }
+    const _user: User = { 
+      id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1, 
+      userName: data.userName.trim(), 
+      password: data.password.trim(),
+      isModerator: users.length > 0 ? false : true 
+    }
+    
     const existingUser = users.find((u) => u.userName == _user.userName)
 
     if (!existingUser) {

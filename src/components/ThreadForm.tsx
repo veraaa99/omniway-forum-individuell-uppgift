@@ -10,7 +10,7 @@ type ThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
 
 export default function ThreadForm({ onClose }: ThreadFormProps) {
     const { threads, actions } = useThread();
-    const { currentUser } = useUser();
+    const { users, currentUser } = useUser();
 
     const creationDate = new Date().toLocaleDateString("sv-SE");
 
@@ -37,7 +37,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     category: data.category,
                     description: data.description,
                     creationDate: creationDate,
-                    creator: { userName: currentUser.userName, password: currentUser.password },
+                    creator: currentUser,
                     commentsLocked: data.commentsLocked,
                     isAnswered: false,
                     commentAnswerId: 0
@@ -51,7 +51,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     category: data.category,
                     description: data.description,
                     creationDate: creationDate,
-                    creator: { userName: currentUser.userName, password: currentUser.password },
+                    creator: currentUser,
                     commentsLocked: data.commentsLocked
                 }
                 actions.createThread(newThread);

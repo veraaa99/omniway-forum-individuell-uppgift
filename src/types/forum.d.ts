@@ -3,8 +3,10 @@ type ThreadCategory = "NoCategory" | "QNA" | "Diskussion" | "Meddelande" | "Hitt
 type ThreadCategoryType = Thread | QNAThread
 
 type User = {
+	id: number;
 	userName: string;
-	password: string
+	password: string;
+	isModerator: boolean;
 }
 
 type Thread = {
@@ -29,3 +31,9 @@ type ForumComment = {
 	content: string;
 	creator: User;
 }
+
+// Användare kan endast editera sina egna trådar - OK
+
+// Avändare kan vara moderatorer i vilket fall dem ska kunna hantera all data
+
+// Kommentarer på QNA trådar ska kunna markeras som svar endast av skaparen
