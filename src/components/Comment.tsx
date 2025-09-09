@@ -27,13 +27,13 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
   
   const _thread = QNAThreads.find(
     (t) => t.id === threadId
-  );   
+  );
 
   const handleToggleIsAnswered = () => {
-    if (!currentUser) {
+    if (!currentUser || (_thread?.creator.userName !== currentUser?.userName && currentUser?.isModerator == false)) {
       setShowLoginPopup(true)
       return;
-    }
+    } 
 
     if(_thread && !isThreadAnswered) {
 
@@ -49,10 +49,7 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
         commentAnswerId: comment.id
       }
       
-      const threadIndex = threads.findIndex(
-        (t) => t.id === threadId
-      );  
-      actions.updateQNAThread(threadIndex, updatedThread)
+      actions.updateThread(updatedThread)
     }
   }
 
@@ -71,14 +68,19 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
         <p className='font-semibold text-gray-200'>{comment.creator.userName}</p>
       </div>
       <p className='text-gray-200 my-3'>{comment.content}</p>
-      { threadCategory === "QNA" && 
+      { threadCategory === "QNA" &&
       <button onClick={handleToggleIsAnswered} disabled={isThreadAnswered} className={`bg-green-900 text-white text-sm rounded p-2 ${isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'bg-green-900' : 'bg-neutral-500'}`}>{isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'Svar' : 'Markera som svar'}</button>
       }
 
       { showLoginPopup && (
           <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
             <div className="bg-white text-black p-6 rounded shadow-lg text-center max-w-sm w-full">
+              {!currentUser 
+              ? 
               <p className="mb-4 text-lg font-semibold">Du måste vara inloggad för att markera en kommentar som svar.</p>
+              :
+              <p className="mb-4 text-lg font-semibold">Endast skaparen av tråden eller moderatorer kan markera en kommentar som svar.</p>
+              }
               <button
                 onClick={closeLoginPopup}
                 className="mt-2 px-4 py-2 bg-blue-950 text-white rounded hover:bg-blue-700"

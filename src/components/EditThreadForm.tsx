@@ -2,59 +2,60 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useThread } from '../contexts/ThreadContext';
 import { useUser } from '../contexts/UserContext';
 
-type ThreadFormProps = {
+type EditThreadFormProps = {
+    thread: ThreadCategoryType;
     onClose?: () => void;
 }
 
-type ThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
+type EditThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
 
-export default function ThreadForm({ onClose }: ThreadFormProps) {
-    const { threads, actions } = useThread();
-    const { currentUser } = useUser();
+export default function EditThreadForm({ thread, onClose }: EditThreadFormProps) {
+    const { actions } = useThread();
+    const { users, currentUser } = useUser();
 
-    const creationDate = new Date().toLocaleDateString("sv-SE");
+    const updatedDate = new Date().toLocaleDateString("sv-SE");
 
     const {
         register,
         setValue,
         handleSubmit,
         formState: { errors },
-    } = useForm<ThreadFormData>()
+    } = useForm<EditThreadFormData>()
 
-    const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
-
+    const onSubmit: SubmitHandler<EditThreadFormData> = (data) => {
         if (!currentUser) {
-            // seterrorMessage('Du måste vara inloggad för att skapa en tråd')
-
             return
         }
+        const _user = users.find((u) => u == thread.creator)
 
-        if (currentUser) {
+        if (currentUser && _user) {
             if(data.category == "QNA") {
+                const qnaThread = thread as QNAThread;
                 const newQNAThread: QNAThread = {
-                    id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
+                    id: qnaThread.id,
                     title: data.title,
                     category: data.category,
                     description: data.description,
-                    creationDate: creationDate,
-                    creator: currentUser,
+                    creationDate: updatedDate,
+                    creator: _user,
                     commentsLocked: data.commentsLocked,
-                    isAnswered: false,
-                    commentAnswerId: 0
+                    isAnswered: qnaThread.isAnswered,
+                    commentAnswerId: qnaThread.commentAnswerId
                 }
-                actions.createThread(newQNAThread);
+                actions.updateThread(newQNAThread);
                 onClose?.();
+
             } else {
                 const newThread: Thread = {
-                    id: threads.length > 0 ? Math.max(...threads.map(t => t.id)) + 1 : 1,
+                    id: thread.id,
                     title: data.title,
                     category: data.category,
                     description: data.description,
-                    creationDate: creationDate,
-                    creator: currentUser,
+                    creationDate: updatedDate,
+                    creator: _user,
                     commentsLocked: data.commentsLocked
                 }
-                actions.createThread(newThread);
+                actions.updateThread(newThread);
                 onClose?.();
             }
         }
@@ -67,7 +68,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                     <label className="block mb-2" >Titel: </label>
-                    <input className='border' {...register("title", { required: true })} />
+                    <input className='border' defaultValue={thread.title} {...register("title", { required: true })} />
                     {errors.title && errors.title.type === "required" && <p className="text-red-600 text-sm italic mt-1">Vänligen ange en titel</p>}
                 </div>
 
@@ -76,6 +77,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     <div className=''>
                         <select
                             className='border'
+                            defaultValue={thread.category}
                             required
                             {...register("category", { validate: (value) => value !== 'NoCategory' })}
                             onChange={e => setValue("category", e.target.value as ThreadCategory, { shouldValidate: true })}
@@ -92,7 +94,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
 
                 <div>
                     <label>Beskrivning: </label>
-                    <textarea className='border w-full p-2 rounded' id='description' {...register("description", { required: true })} />
+                    <textarea className='border w-full p-2 rounded' defaultValue={thread.description} id='description' {...register("description", { required: true })} />
                     {errors.description && errors.description.type === "required" && <p className="text-red-600 text-sm italic">Vänligen ange en beskrivning till tråden</p>}
                 </div>
 

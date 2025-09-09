@@ -8,7 +8,7 @@ type ThreadState = {
   comments: ForumComment[];
   actions: {
     createThread: (thread: ThreadCategoryType) => void;
-    updateQNAThread: (threadIndex: number, updatedThread: QNAThread) => void;
+    updateThread: (updatedThread: ThreadCategoryType) => void;
     getThreadByID: (threadId: ThreadCategoryType['id']) => Thread | undefined;
     addComment: (comment: ForumComment) => void;
     isQNAAnswered: (threadId: ThreadCategoryType['id']) => boolean;
@@ -21,7 +21,7 @@ const defaultState: ThreadState = {
   comments: [],
   actions: {
     createThread: () => { },
-    updateQNAThread: () => {},
+    updateThread: () => {},
     getThreadByID: () => undefined,
     addComment: () => { },
     isQNAAnswered: () => false,
@@ -51,9 +51,11 @@ function ThreadProvider({ children }: PropsWithChildren) {
     LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', newThreads)
   }
 
-  const updateQNAThread: typeof defaultState.actions.updateQNAThread = (threadIndex: number, updatedThread: QNAThread) => {
+  const updateThread: typeof defaultState.actions.updateThread = (updatedThread: ThreadCategoryType) => {
     const newThreads = [...threads]
+    const threadIndex = newThreads.findIndex(thread => thread.id === updatedThread.id)
     newThreads[threadIndex] = updatedThread
+    
     setThreads(newThreads)
     LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', newThreads)
   }
@@ -65,8 +67,6 @@ function ThreadProvider({ children }: PropsWithChildren) {
     const newComments = [...comments, comment]
     setComments(newComments)
     LocalStorageService.setItem<ForumComment[]>('@forum/comments', newComments)
-
-    setComments(newComments)
   }
 
   const getComments = () => {
@@ -98,7 +98,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
 
   const actions: typeof defaultState.actions = {
     createThread,
-    updateQNAThread,
+    updateThread,
     getThreadByID,
     addComment,
     isQNAAnswered,
