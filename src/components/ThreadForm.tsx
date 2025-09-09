@@ -10,7 +10,7 @@ type ThreadFormData = Omit<Thread, 'id' | 'creator' | 'creationDate'>
 
 export default function ThreadForm({ onClose }: ThreadFormProps) {
     const { threads, actions } = useThread();
-    const { users, currentUser } = useUser();
+    const { currentUser } = useUser();
 
     const creationDate = new Date().toLocaleDateString("sv-SE");
 
