@@ -1,7 +1,6 @@
 import { FaUser } from "react-icons/fa";
 import { useThread } from "../contexts/ThreadContext";
 
-
 type ThreadProps = {
   thread: Thread | QNAThread;
   onClick?: () => void;

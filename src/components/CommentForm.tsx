@@ -6,13 +6,14 @@ import { useState } from 'react';
 type CommentFormProps = {
   thread: Thread | QNAThread;
   onClose: () => void;
+  commentAnswerId?: number
 }
 
 type FormData = {
   comment: string;
 }
 
-function CommentForm({ thread, onClose }: CommentFormProps) {
+function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
   const { actions } = useThread()
   const { currentUser } = useUser()
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
@@ -20,26 +21,37 @@ function CommentForm({ thread, onClose }: CommentFormProps) {
 
   const onSubmit = (data: FormData) => {
     if (!currentUser) {
-      // alert("Du måste vara inloggad för att kommentera.");
       setShowLoginPopup(true)
       return;
     }
 
-    const newComment: ForumComment = {
-      id: Date.now(),
-      thread: thread.id,
-      content: data.comment,
-      creator: currentUser,
+    if(commentAnswerId) {
+      const newCommentAnswer: ForumComment = {
+        id: Date.now(),
+        thread: thread.id,
+        content: data.comment,
+        creator: currentUser,
+        comment: commentAnswerId
+      }
+      actions.addComment(newCommentAnswer);
+    } else {
+      const newComment: ForumComment = {
+        id: Date.now(),
+        thread: thread.id,
+        content: data.comment,
+        creator: currentUser,
+        comment: 0
+      }
+      actions.addComment(newComment);
     }
-
-    actions.addComment(newComment);
+    
     onClose();
   };
+
   const closeLoginPopup = () => {
     setShowLoginPopup(false);
   };
 
-  // console.log(errors);
   return (
     <div onClick={onClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
       <div onClick={(e) => e.stopPropagation()} className="relative bg-white max-w-screen-sm shadow-md rounded px-8 pt-6 pb-8 my-6 flex flex-col justify-center">

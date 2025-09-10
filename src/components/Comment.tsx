@@ -2,6 +2,7 @@ import { FaUser } from "react-icons/fa"
 import { useThread } from "../contexts/ThreadContext";
 import { useUser } from "../contexts/UserContext";
 import { useState } from "react";
+import CommentForm from "./CommentForm";
 
 type CommentProps = {
   comment: ForumComment;
@@ -10,11 +11,11 @@ type CommentProps = {
 }
 
 function Comment({ comment, threadCategory, threadId }: CommentProps) {
-
-  const { actions, threads } = useThread()
+  const { actions, threads, comments } = useThread()
   const { currentUser } = useUser()
 
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
+  const [showCommentAnswerForm, setShowCommentAnswerForm] = useState<boolean>(false)
 
   let isThreadAnswered = actions.isQNAAnswered(threadId)
 
@@ -29,6 +30,8 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
     (t) => t.id === threadId
   );
 
+  const answerComment: ForumComment | undefined = comments.find(c => c.id == comment.comment)
+
   const handleToggleIsAnswered = () => {
     if (!currentUser || (_thread?.creator.userName !== currentUser?.userName && currentUser?.isModerator == false)) {
       setShowLoginPopup(true)
@@ -36,7 +39,6 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
     } 
 
     if(_thread && !isThreadAnswered) {
-
       const updatedThread: QNAThread = { 
         id: _thread.id, 
         title: _thread.title,
@@ -63,6 +65,17 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
 
   return (
     <div className='p-4 mt-4 rounded-lg mb-4 border border-gray-300 bg-blue-950'>
+
+      { answerComment && 
+        <div className='p-4 mt-4 rounded-lg mb-4 border border-gray-300 bg-blue-500/30'>
+          <div className='flex gap-2 items-center'>
+            <div className='text-gray-200'><FaUser /></div>
+            <p className='font-semibold text-gray-200'>{answerComment.creator.userName}</p>
+          </div>
+          <p className='text-gray-200 my-3'>{answerComment.content}</p>
+        </div>
+      }
+      
       <div className='flex gap-2 items-center'>
         <div className='text-gray-200'><FaUser /></div>
         <p className='font-semibold text-gray-200'>{comment.creator.userName}</p>
@@ -71,6 +84,16 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
       { threadCategory === "QNA" &&
       <button onClick={handleToggleIsAnswered} disabled={isThreadAnswered} className={`bg-green-900 text-white text-sm rounded p-2 ${isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'bg-green-900' : 'bg-neutral-500'}`}>{isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'Svar' : 'Markera som svar'}</button>
       }
+      { _thread && !_thread.commentsLocked && (
+        <div className="mt-3">
+          <button className='bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500'
+            onClick={() => setShowCommentAnswerForm(true)}>
+            Svara på kommentar
+          </button>
+        </div>
+      )}
+
+      {_thread && showCommentAnswerForm && !_thread?.commentsLocked && <CommentForm thread={_thread} onClose={() => setShowCommentAnswerForm(false)} commentAnswerId={comment.id} />}
 
       { showLoginPopup && (
           <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>

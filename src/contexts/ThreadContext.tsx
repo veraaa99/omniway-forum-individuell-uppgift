@@ -32,10 +32,11 @@ const defaultState: ThreadState = {
 const ThreadContext = createContext<ThreadState>(defaultState);
 
 function ThreadProvider({ children }: PropsWithChildren) {
-  const [threads, setThreads] = useState<ThreadCategoryType[]>([]);
+  const [threads, setThreads] = useState<ThreadCategoryType[]>(dummyThreads);
   const [comments, setComments] = useState<ForumComment[]>([]);
 
   useEffect(() => {
+    LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', threads)
     _getThreads();
     getComments();
   }, [])
