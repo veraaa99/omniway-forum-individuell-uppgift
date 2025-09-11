@@ -7,7 +7,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import Modal from 'react-modal'
 import ThreadForm from './ThreadForm';
 import { useUser } from '../contexts/UserContext';
-import { useNavigate } from 'react-router';
+import { useNavigate, type NavigateFunction } from 'react-router';
 
 
 export default function ThreadList() {
@@ -16,7 +16,7 @@ export default function ThreadList() {
   const [selectedThread, setselectedThread] = useState<Thread | QNAThread | null>(null)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
-  const navigate = useNavigate()
+  const navigate: NavigateFunction = useNavigate()
 
   const handleCreateThreadButton = () => {
     if (!currentUser) {

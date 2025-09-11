@@ -9,7 +9,7 @@ type CommentsListProps = {
 function CommentsList({ threadId, threadCategory }: CommentsListProps) {
   const { comments } = useThread();
 
-  let threadComments = comments.filter(
+  const threadComments: ForumComment[] = comments.filter(
     (c) => c.thread === threadId
   );
   

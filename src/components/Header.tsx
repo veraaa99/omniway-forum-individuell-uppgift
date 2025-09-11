@@ -44,7 +44,7 @@ function Header() {
 
       <div className="flex flex-col items-center text-base gap-1 cursor-pointer" onClick={() => { if (!currentUser) setshowLogin(true) }}>
         <CgProfile className="text-xl" />
-        <p>{currentUser == null ? 'Logga in' : currentUser.userName}</p>
+        <p>{currentUser == null ? 'Logga in' : currentUser.userName} {currentUser?.isModerator && '(Admin)'}</p>
       </div>
 
       <div className="flex flex-col items-center text-base gap-1 text-center justify-center">
@@ -65,7 +65,6 @@ function Header() {
           onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <HiX /> : <HiMenu />}
         </button>
-
 
         <nav className="hidden md:flex gap-6 text-white text-xl">
           <NavItems />
@@ -97,7 +96,7 @@ function Header() {
         overlayClassName='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50'>
         <button className="absolute top-2 right-2 text-gray-600">X</button>
         <RegisterForm onSuccess={() => setshowRegister(false)} />
-        <p className="text-sm my-4">Har du redan ett konto? {''}
+        <p className="text-sm my-4 text-center">Har du redan ett konto? {''}
           <button className="text-blue-500 underline text-sm" onClick={() => { setshowLogin(true); setshowRegister(false) }}>Logga in här</button>
         </p>
 

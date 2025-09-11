@@ -13,8 +13,6 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
     const { actions } = useThread();
     const { users, currentUser } = useUser();
 
-    const updatedDate = new Date().toLocaleDateString("sv-SE");
-
     const {
         register,
         setValue,
@@ -22,11 +20,11 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
         formState: { errors },
     } = useForm<EditThreadFormData>()
 
-    const onSubmit: SubmitHandler<EditThreadFormData> = (data) => {
+    const onSubmit: SubmitHandler<EditThreadFormData> = (data: EditThreadFormData) => {
         if (!currentUser) {
             return
         }
-        const _user = users.find((u) => u == thread.creator)
+        const _user: User | undefined = users.find((u) => u == thread.creator)
 
         if (currentUser && _user || currentUser.isModerator) {
             if(data.category == "QNA") {
@@ -36,30 +34,27 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                     title: data.title,
                     category: data.category,
                     description: data.description,
-                    creationDate: updatedDate,
+                    creationDate: qnaThread.creationDate,
                     creator: qnaThread.creator,
                     commentsLocked: data.commentsLocked,
                     isAnswered: qnaThread.isAnswered,
-                    commentAnswerId: qnaThread.commentAnswerId
+                    commentReplyId: qnaThread.commentReplyId
                 }
                 actions.updateThread(newQNAThread);
-                onClose?.();
-
             } else {
                 const newThread: Thread = {
                     id: thread.id,
                     title: data.title,
                     category: data.category,
                     description: data.description,
-                    creationDate: updatedDate,
+                    creationDate: thread.creationDate,
                     creator: thread.creator,
                     commentsLocked: data.commentsLocked
                 }
                 actions.updateThread(newThread);
-                onClose?.();
             }
+            onClose?.();
         }
-
         return
     }
 
@@ -104,7 +99,6 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                         <span className="ml-2">Låsa kommentarer?</span>
                     </label>
                 </div>
-                {/* {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)} */}
 
                 <button
                     type='submit'

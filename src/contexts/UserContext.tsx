@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react"
 import LocalStorageService from "../utils/LocalStorageService"
+import { dummyUsers } from "../data/users"
 
 type UserState = {
     users: User[]
@@ -22,7 +23,7 @@ const defaultState: UserState = {
 const UserContext = createContext<UserState>(defaultState)
 
 function UserProvider ({ children }: PropsWithChildren) {
-    const [users, setUsers] = useState<User[]>([])
+    const [users, setUsers] = useState<User[]>(dummyUsers)
     const [currentUser, setCurrentUser] = useState<User | null>(defaultState.currentUser)
     
     useEffect(() => {
@@ -31,7 +32,7 @@ function UserProvider ({ children }: PropsWithChildren) {
     }, [])
     
     const _getUsers = () => {
-        const _users: User[] = LocalStorageService.getItem('@forum/users', [])
+        const _users: User[] = LocalStorageService.getItem('@forum/users', dummyUsers)
         setUsers(_users)
     }
 
@@ -46,8 +47,6 @@ function UserProvider ({ children }: PropsWithChildren) {
     }
 
     const createUser: typeof defaultState.actions.createUser = (user) => {
-        // console.log("User: ", user)
-
         const updatedUsers = [...users, user]
         _setUsers(updatedUsers)
     }

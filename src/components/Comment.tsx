@@ -15,9 +15,11 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
   const { currentUser } = useUser()
 
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
-  const [showCommentAnswerForm, setShowCommentAnswerForm] = useState<boolean>(false)
+  const [showCommentReplyForm, setShowCommentReplyForm] = useState<boolean>(false)
 
-  let isThreadAnswered = actions.isQNAAnswered(threadId)
+  const _thread: ThreadCategoryType | undefined = threads.find(t => t.id == threadId)
+
+  const isThreadAnswered: boolean = actions.isQNAAnswered(threadId)
 
   function isQNAThread(thread: ThreadCategoryType): thread is QNAThread {
     return thread.category == "QNA";
@@ -26,29 +28,29 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
   const QNAThreads = threads
   .filter((item): item is QNAThread => isQNAThread(item))
   
-  const _thread = QNAThreads.find(
+  const _QNAThread = QNAThreads.find(
     (t) => t.id === threadId
   );
 
   const answerComment: ForumComment | undefined = comments.find(c => c.id == comment.comment)
 
   const handleToggleIsAnswered = () => {
-    if (!currentUser || (_thread?.creator.userName !== currentUser?.userName && currentUser?.isModerator == false)) {
+    if (!currentUser || (_QNAThread?.creator.id !== currentUser?.id && currentUser?.isModerator == false)) {
       setShowLoginPopup(true)
       return;
     } 
 
-    if(_thread && !isThreadAnswered) {
+    if(_QNAThread && !isThreadAnswered) {
       const updatedThread: QNAThread = { 
-        id: _thread.id, 
-        title: _thread.title,
+        id: _QNAThread.id, 
+        title: _QNAThread.title,
         category: "QNA",
-        creationDate: _thread.creationDate,
-        description: _thread.description,
-        creator: _thread.creator,
-        commentsLocked: _thread.commentsLocked, 
+        creationDate: _QNAThread.creationDate,
+        description: _QNAThread.description,
+        creator: _QNAThread.creator,
+        commentsLocked: _QNAThread.commentsLocked, 
         isAnswered: true, 
-        commentAnswerId: comment.id
+        commentReplyId: comment.id
       }
       
       actions.updateThread(updatedThread)
@@ -81,19 +83,21 @@ function Comment({ comment, threadCategory, threadId }: CommentProps) {
         <p className='font-semibold text-gray-200'>{comment.creator.userName}</p>
       </div>
       <p className='text-gray-200 my-3'>{comment.content}</p>
-      { threadCategory === "QNA" &&
-      <button onClick={handleToggleIsAnswered} disabled={isThreadAnswered} className={`bg-green-900 text-white text-sm rounded p-2 ${isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'bg-green-900' : 'bg-neutral-500'}`}>{isThreadAnswered && _thread?.commentAnswerId == comment.id ? 'Svar' : 'Markera som svar'}</button>
+      { _QNAThread && threadCategory === "QNA" &&
+      <button onClick={handleToggleIsAnswered} disabled={isThreadAnswered} className={`bg-green-900 text-white text-sm rounded p-2 ${isThreadAnswered && _QNAThread.commentReplyId == comment.id ? 'bg-green-900' : 'bg-neutral-500'}`}>
+        {isThreadAnswered && _QNAThread.commentReplyId == comment.id ? 'Svar' : 'Markera som svar'}
+      </button>
       }
       { _thread && !_thread.commentsLocked && (
         <div className="mt-3">
           <button className='bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500'
-            onClick={() => setShowCommentAnswerForm(true)}>
+            onClick={() => setShowCommentReplyForm(true)}>
             Svara på kommentar
           </button>
         </div>
       )}
 
-      {_thread && showCommentAnswerForm && !_thread?.commentsLocked && <CommentForm thread={_thread} onClose={() => setShowCommentAnswerForm(false)} commentAnswerId={comment.id} />}
+      {_thread && showCommentReplyForm && !_thread.commentsLocked && <CommentForm thread={_thread} onClose={() => setShowCommentReplyForm(false)} commentReplyId={comment.id} />}
 
       { showLoginPopup && (
           <div onClick={closeLoginPopup} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex justify-center items-center'>
