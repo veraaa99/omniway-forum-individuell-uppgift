@@ -30,4 +30,10 @@ type ForumComment = {
 	thread: number;
 	content: string;
 	creator: User;
+	comment: number
 }
+
+// - Kommentarer kan skapas på andra kommentarer
+// - Kommentarer får inte innehålla opassande språk 
+// (valfritt vad som ses som opassande) 
+// och ska gömmas eller visas upp i censurerat läge om de innehåller det.
