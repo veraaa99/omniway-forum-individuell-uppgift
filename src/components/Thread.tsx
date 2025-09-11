@@ -8,7 +8,7 @@ import { useUser } from '../contexts/UserContext';
 import EditThreadForm from './EditThreadForm';
 
 type ThreadProps = {
-  thread: Thread | QNAThread;
+  thread: ThreadCategoryType;
 };
 
 export default function Thread({ thread }: ThreadProps) {
@@ -20,11 +20,8 @@ export default function Thread({ thread }: ThreadProps) {
   const [commentsLocked, setCommentsLocked] = useState<boolean | undefined>(thread.commentsLocked)
   const [updatedThread, setUpdatedThread] = useState<ThreadCategoryType>(thread)
 
-  const threadComments = comments?.filter(c => c.thread === thread.id);
-  const answerCount = threadComments.length;
-
-  const handleOpenForm = () => setShowCommentForm(true);
-  const handleCloseForm = () => setShowCommentForm(false);
+  const threadComments: ForumComment[] = comments?.filter(c => c.thread === thread.id);
+  const answerCount: number = threadComments.length;
 
   const toggleCommentsLock = (threadId: number) => {
     actions.toggleCommentsLock(threadId);
@@ -80,12 +77,12 @@ export default function Thread({ thread }: ThreadProps) {
 
       {!commentsLocked && (
         <button className='bg-orange-600 text-gray-100 rounded px-3 py-2 text-sm hover:bg-orange-500'
-          onClick={handleOpenForm}>
+          onClick={() => setShowCommentForm(true)}>
           Svara
         </button>
       )}
 
-      {showCommentForm && !commentsLocked && <CommentForm thread={updatedThread} onClose={handleCloseForm} />}
+      {showCommentForm && !commentsLocked && <CommentForm thread={updatedThread} onClose={() => setShowCommentForm(false)} />}
 
       {commentsLocked && <p className="text-orange-600 font-semibold mt-3">Kommentarer är låsta för denna tråd.</p>}
 

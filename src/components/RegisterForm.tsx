@@ -33,10 +33,10 @@ function RegisterForm({ onSuccess }: RegisterFormProps) {
       id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1, 
       userName: data.userName.trim(), 
       password: data.password.trim(),
-      isModerator: users.length > 0 ? false : true 
+      isModerator: data.isModerator 
     }
     
-    const existingUser = users.find((u) => u.userName == _user.userName)
+    const existingUser: User | undefined = users.find((u) => u.userName == _user.userName)
 
     if (!existingUser) {
       actions.createUser(_user)
@@ -44,7 +44,6 @@ function RegisterForm({ onSuccess }: RegisterFormProps) {
       setIsSubmitted(true)
     } else {
       setFormError("Användarnamnet är redan taget")
-      return
     }
 
     return
@@ -64,6 +63,23 @@ function RegisterForm({ onSuccess }: RegisterFormProps) {
           <label className="block mb-2">Lösenord: </label>
           <input type='password' className='border' id='password' {...register("password", { required: true })} />
           {errors.password && errors.password.type === "required" && <p className="text-red-500 text-xs italic mt-1">Vänligen ange ett lösenord</p>}
+        </div>
+
+        <div className='mb-3'>
+          <label className="inline-flex items-center">
+            { users.find(u => u.isModerator == true) 
+            ?
+            <>
+              <input type="checkbox" disabled className="form-checkbox" {...register("isModerator")} />
+              <p className="ml-2 text-sm text-slate-500">Det finns redan en användare med moderatorroll</p>
+            </>
+            :
+            <>
+              <input type="checkbox" className="form-checkbox" {...register("isModerator")} />
+              <p className="ml-2 text-sm">Sätt som moderator?</p>
+            </>
+            }
+          </label>
         </div>
 
         <div>

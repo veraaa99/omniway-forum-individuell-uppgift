@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useThread } from '../contexts/ThreadContext';
 import { useUser } from '../contexts/UserContext';
 import { useState } from 'react';
@@ -7,15 +7,15 @@ import { Filter } from 'bad-words'
 type CommentFormProps = {
   thread: Thread | QNAThread;
   onClose: () => void;
-  commentAnswerId?: number
+  commentReplyId?: number
 }
 
 type FormData = {
   comment: string;
 }
 
-function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
-  const { actions } = useThread()
+function CommentForm({ thread, onClose, commentReplyId }: CommentFormProps) {
+  const { comments, actions } = useThread()
   const { currentUser } = useUser()
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
@@ -23,24 +23,24 @@ function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
   const filter: Filter = new Filter()
   filter.addWords('fan','skit', 'helvete', 'helvetes')
   
-  const onSubmit = (data: FormData) => {
+  const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     if (!currentUser) {
       setShowLoginPopup(true)
       return;
     }
 
-    if(commentAnswerId) {
-      const newCommentAnswer: ForumComment = {
-        id: Date.now(),
+    if(commentReplyId) {
+      const newCommentReply: ForumComment = {
+        id: comments.length > 0 ? Math.max(...comments.map(c => c.id)) + 1 : 1,
         thread: thread.id,
         content: filter.clean(data.comment),
         creator: currentUser,
-        comment: commentAnswerId
+        comment: commentReplyId
       }
-      actions.addComment(newCommentAnswer);
+      actions.addComment(newCommentReply);
     } else {
       const newComment: ForumComment = {
-        id: Date.now(),
+        id: comments.length > 0 ? Math.max(...comments.map(c => c.id)) + 1 : 1,
         thread: thread.id,
         content: filter.clean(data.comment),
         creator: currentUser,
@@ -67,9 +67,12 @@ function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
           X
         </button>
         <div className="bg-white shadow-md rounded px-8 py-6 mt-10 mb-4">
-          {thread && (
-            <p>Svar till <span className='font-bold'>{thread.creator.userName}</span> på tråd <span className='font-bold'>{thread.title}</span></p>
-          )}
+          { thread && commentReplyId == undefined &&
+          ( <p>Svar till <span className='font-bold'>{thread.creator.userName}</span> på tråd <span className='font-bold'>{thread.title}</span></p> )
+          }
+          { thread && commentReplyId &&
+            ( <p>Svar till kommentar av <span className='font-bold'>{comments.find(c => c.id == commentReplyId)?.creator.userName}</span> på tråd <span className='font-bold'>{thread.title}</span></p> )
+          }
         </div>
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">

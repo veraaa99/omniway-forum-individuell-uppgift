@@ -9,9 +9,10 @@ function PrivateRoute({ children }: PropsWithChildren) {
     return <Navigate to="/" replace />;
   }
 
-  return
-  <> 
-    { children }
-  </>
+  return (
+    <> 
+      { children }
+    </>
+  )
 }
 export default PrivateRoute;

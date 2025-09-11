@@ -12,7 +12,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
     const { threads, actions } = useThread();
     const { currentUser } = useUser();
 
-    const creationDate = new Date().toLocaleDateString("sv-SE");
+    const creationDate: string = new Date().toLocaleDateString("sv-SE");
 
     const {
         register,
@@ -21,11 +21,8 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
         formState: { errors },
     } = useForm<ThreadFormData>()
 
-    const onSubmit: SubmitHandler<ThreadFormData> = (data) => {
-
+    const onSubmit: SubmitHandler<ThreadFormData> = (data: ThreadFormData) => {
         if (!currentUser) {
-            // seterrorMessage('Du måste vara inloggad för att skapa en tråd')
-
             return
         }
 
@@ -40,7 +37,7 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                     creator: currentUser,
                     commentsLocked: data.commentsLocked,
                     isAnswered: false,
-                    commentAnswerId: 0
+                    commentReplyId: 0
                 }
                 actions.createThread(newQNAThread);
                 onClose?.();
@@ -102,7 +99,6 @@ export default function ThreadForm({ onClose }: ThreadFormProps) {
                         <span className="ml-2">Låsa kommentarer?</span>
                     </label>
                 </div>
-                {/* {errorMessage && (<p className='text-red-600 text-sm mb-4'>{errorMessage}</p>)} */}
 
                 <button
                     type='submit'

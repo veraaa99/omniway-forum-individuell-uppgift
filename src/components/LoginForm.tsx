@@ -48,7 +48,6 @@ function LoginForm({ onSuccess }: LoginFormProps) {
         onSuccess()
       } else {
         setFormError("Fel lösenord")
-        return
       }
     }
 

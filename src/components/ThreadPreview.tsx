@@ -2,18 +2,18 @@ import { FaUser } from "react-icons/fa";
 import { useThread } from "../contexts/ThreadContext";
 
 type ThreadProps = {
-  thread: Thread | QNAThread;
+  thread: ThreadCategoryType;
   onClick?: () => void;
 };
 
 export default function ThreadPreview({ thread, onClick }: ThreadProps) {
   const { comments } = useThread();
 
-  const threadComments = comments.filter(
+  const threadComments: ForumComment[] = comments.filter(
     (c) => (c as { thread: number }).thread === thread.id
   );
 
-  const answerCount = threadComments.length;
+  const answerCount: number = threadComments.length;
 
   if (onClick) {
     return (

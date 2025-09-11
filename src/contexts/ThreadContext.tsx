@@ -33,10 +33,9 @@ const ThreadContext = createContext<ThreadState>(defaultState);
 
 function ThreadProvider({ children }: PropsWithChildren) {
   const [threads, setThreads] = useState<ThreadCategoryType[]>(dummyThreads);
-  const [comments, setComments] = useState<ForumComment[]>([]);
+  const [comments, setComments] = useState<ForumComment[]>(dummyComments);
 
   useEffect(() => {
-    // LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', threads)
     _getThreads();
     getComments();
   }, [])
@@ -64,6 +63,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
   const getThreadByID: typeof defaultState.actions.getThreadByID = (threadId: number): Thread | undefined => {
     return threads.find(thread => thread.id === threadId)
   }
+  
   const addComment: typeof defaultState.actions.addComment = (comment): void => {
     const newComments = [...comments, comment]
     setComments(newComments)

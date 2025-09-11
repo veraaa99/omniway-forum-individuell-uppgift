@@ -1,13 +1,14 @@
 import { dummyUsers } from "./users";
 
-export const dummyThreads: (Thread | QNAThread)[] = [
+export const dummyThreads: (ThreadCategoryType)[] = [
 	{
 		id: 1,
 		title: "Testartråden nummer 1",
-		category: "THREAD",
+		category: "Diskussion",
 		creationDate: "2025-09-01",
 		description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis facilis iste aliquam earum itaque rerum veniam eligendi minus dignissimos vitae quidem ex, expedita deserunt obcaecati vero fugit pariatur ipsa est!",
-		creator: dummyUsers[0]
+		creator: dummyUsers[0],
+		commentsLocked: false
 	},
 	{
 		id: 2,
@@ -16,7 +17,8 @@ export const dummyThreads: (Thread | QNAThread)[] = [
 		creationDate: "2025-09-01",
 		description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga voluptas magni doloremque eaque corrupti, labore laborum officia incidunt totam non praesentium tenetur neque libero veritatis at architecto ducimus odit, cupiditate nisi natus ipsa sint repudiandae sed reprehenderit. Modi facere obcaecati illum sint enim, quae ex repellendus repudiandae ab voluptas dolore corrupti error minima earum possimus vel beatae velit! Dolore, dolorum.",
 		creator: dummyUsers[1],
+		commentsLocked: false,
 		isAnswered: false,
-		commentAnswerId: 1
+		commentReplyId: 0
 	}
 ]
