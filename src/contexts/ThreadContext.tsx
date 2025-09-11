@@ -36,7 +36,7 @@ function ThreadProvider({ children }: PropsWithChildren) {
   const [comments, setComments] = useState<ForumComment[]>([]);
 
   useEffect(() => {
-    LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', threads)
+    // LocalStorageService.setItem<ThreadCategoryType[]>('@forum/threads', threads)
     _getThreads();
     getComments();
   }, [])

@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useThread } from '../contexts/ThreadContext';
 import { useUser } from '../contexts/UserContext';
 import { useState } from 'react';
+import { Filter } from 'bad-words'
 
 type CommentFormProps = {
   thread: Thread | QNAThread;
@@ -19,6 +20,9 @@ function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
 
+  const filter: Filter = new Filter()
+  filter.addWords('fan','skit', 'helvete', 'helvetes')
+  
   const onSubmit = (data: FormData) => {
     if (!currentUser) {
       setShowLoginPopup(true)
@@ -29,7 +33,7 @@ function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
       const newCommentAnswer: ForumComment = {
         id: Date.now(),
         thread: thread.id,
-        content: data.comment,
+        content: filter.clean(data.comment),
         creator: currentUser,
         comment: commentAnswerId
       }
@@ -38,13 +42,13 @@ function CommentForm({ thread, onClose, commentAnswerId }: CommentFormProps) {
       const newComment: ForumComment = {
         id: Date.now(),
         thread: thread.id,
-        content: data.comment,
+        content: filter.clean(data.comment),
         creator: currentUser,
         comment: 0
       }
       actions.addComment(newComment);
     }
-    
+
     onClose();
   };
 

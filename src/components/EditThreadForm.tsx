@@ -28,7 +28,7 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
         }
         const _user = users.find((u) => u == thread.creator)
 
-        if (currentUser && _user) {
+        if (currentUser && _user || currentUser.isModerator) {
             if(data.category == "QNA") {
                 const qnaThread = thread as QNAThread;
                 const newQNAThread: QNAThread = {
@@ -37,7 +37,7 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                     category: data.category,
                     description: data.description,
                     creationDate: updatedDate,
-                    creator: _user,
+                    creator: qnaThread.creator,
                     commentsLocked: data.commentsLocked,
                     isAnswered: qnaThread.isAnswered,
                     commentAnswerId: qnaThread.commentAnswerId
@@ -52,7 +52,7 @@ export default function EditThreadForm({ thread, onClose }: EditThreadFormProps)
                     category: data.category,
                     description: data.description,
                     creationDate: updatedDate,
-                    creator: _user,
+                    creator: thread.creator,
                     commentsLocked: data.commentsLocked
                 }
                 actions.updateThread(newThread);
